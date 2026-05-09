@@ -1,0 +1,77 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><header>
+  <section class="container">
+    <div class="row">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+        <a href="../index.html" class="navbar-brand trans_eff"><img src="../images/logo.png" alt=""></a> </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="../index.html" class="home">Home</a></li>
+          <li><a href="../about.html" class="about-us">About Us</a></li>
+          <li><a href="../our-approach.html" class="our-approach">Our Approach</a></li>
+          <li><a href="../consulting-services.html" class="mob_link_ddx consulting-srvices">Consulting Services <i class="fa fa-angle-down"></i></a><a href="javascript:;" class="mob_link_dd consulting-srvices">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Consulting Services <b></b></a>
+            <div class="mega-con">
+              <ul>
+                <li>
+                  <div class="sublink"> 
+<a href="../consulting-services/quality-management-system.html">Quality Management System</a> 
+<a href="../consulting-services/occupational-health-safety-management-system.html">Occupational Health &amp; Safety Management System</a> 
+<a href="../consulting-services/environment-management-system.html">Environment Management System</a> 
+<a href="../consulting-services/food-safety-management-system.html">Food Safety Management System</a> 
+<a href="../consulting-services/hazard-analysis-critical-control-points.html">Hazard Analysis &amp; Critical Control Points</a> 
+<a href="../halal-certification.html">Halal Certification</a> 
+<a href="../consulting-services/information-security-management-system.html">Information Security Management System</a> 
+<a href="../iso-20000-itsms-information-technology-service-management-system.html">ISO 20000 ITSMS – Information Technology Service Management System</a> 
+<a href="../sedex-supplier-ethical-data-exchange.html">SEDEX – Supplier Ethical Data Exchange</a> </div>
+                </li>
+                <li>
+                  <div class="sublink"> 
+<a href="../consulting-services/complaint-management-system.html">Complaint Management System</a> 
+<a href="../iso-31000-risk-management.html">ISO 31000 – Risk Management</a> 
+<a href="../iso-30000-ships-and-marine-technology-ship-recycling-management-systems.html">ISO 30000 – Ships and marine technology – Ship recycling management systems</a> 
+<a href="../iso-39001-rts-road-traffic-safety.html">ISO 39001 RTS – Road Traffic Safety</a> 
+<a href="../iso-26000-social-responsibility.html">ISO 26000 – Social Responsibility</a> 
+<a href="../iso-22301-bcm-business-continuity-management.html">ISO 22301 BCM – Business Continuity Management</a> 
+<a href="../iso-29001-quality-management-system-for-petroleum-petrochemical-natural-gas-industries.html">ISO 29001 – Quality Management System for Petroleum, Petrochemical Natural Gas Industries</a> </div>
+                </li>
+                <li>
+                  <div class="sublink"> 
+ <a href="../iso-50001-energy-management-system.html">ISO 50001 – Energy Management System</a> <a href="../iso-13485-quality-management-system-for-medical-devices.html">ISO 13485 – Quality Management System for Medical Devices</a> 
+ <a href="../iso-28000-quality-management-system-for-security-of-supply-chain.html">ISO 28000 – Quality Management System for Security of Supply Chain</a> 
+ <a href="../iso-29991-language-learning-services-outside-formal-education.html">ISO 29991 – Language Learning Services Outside Formal Education</a> 
+ <a href="../iso-17025-laboratory-management-system.html">ISO 17025 Laboratory Management System</a> 
+ <a href="../iso-15189-quality-management-system-in-medical-laboratories.html">ISO 15189 – Quality Management System in Medical Laboratories</a> 
+ 
+ <a href="../iso-22870-point-of-care-testing-requirements-for-quality-and-competence.html">ISO 22870 – Point of Care Testing – Requirements for Quality and Competence</a> </div>
+                </li>
+                <div class="clearfix"></div>
+              </ul>
+            </div>
+          </li>
+          <li><a href="../training-services.html" class="mob_link_ddx trainig-services">Training Services <i class="fa fa-angle-down"></i></a><a href="javascript:;" class="mob_link_dd trainig-services">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Training Services <b></b></a>
+            <div class="mega-con">
+              <ul>
+                <li>
+                  <div class="sublink"> 
+<a href="../iso-management-system-awareness-training.html">ISO Management System Awareness Training</a> 
+<a href="../iso-management-system-internal-auditor-training.html">ISO Management System Internal Auditor Training</a> 
+<a href="../ims-awareness-training.html">IMS Awareness Training</a> 
+<a href="../ims-internal-auditor-training.html">IMS Internal Auditor Training</a> 
+<a href="../irca-lead-auditor-courses-iso-9001iso-14001ohsas-18001iso-27001iso-22000.html">IRCA Lead Auditor Courses (ISO 9001/ISO 14001/ISO 45001/ISO 27001/ISO 22000)</a> 
+<a href="../food-safety-management-training-basicintermediateadvanced-level.html">Food Safety Management Training ( Basic / Intermediate / Advanced Level )</a> 
+<a href="../ghp-staffmanager-trainings-as-per-sharjah-municipality.html">GHP Staff/Manager Trainings (As per Sharjah Municipality)</a> 
+
+</div>
+                </li>
+                <div class="clearfix"></div>
+              </ul>
+            </div>
+          </li>
+          <li><a href="../our-clients.html" class="our-clients">Our Clients</a></li>
+          <li><a href="../contact-us.html" class="contact-us">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </section>
+</header>
