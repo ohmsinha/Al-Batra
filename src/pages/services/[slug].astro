@@ -5,8 +5,10 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import LeadCTA from '../../components/LeadCTA.astro';
 import Reveal from '../../components/Reveal.astro';
 import Icon from '../../components/Icon.astro';
+import FAQ from '../../components/FAQ.astro';
 import { standards } from '../../data/standards';
-import { breadcrumbJsonLd, serviceJsonLd } from '../../utils/seo';
+import { emirates, emirateOrder, programmaticServices } from '../../data/emirates';
+import { breadcrumbJsonLd, serviceJsonLd, faqJsonLd } from '../../utils/seo';
 
 export async function getStaticPaths() {
   const entries = await getCollection('services');
@@ -25,6 +27,8 @@ const related = standards
   .filter((s) => data.relatedStandards.includes(s.slug ?? ''))
   .filter((s) => s.slug);
 
+const hasEmiratePages = programmaticServices.includes(entry.slug);
+
 const breadcrumbItems = [
   { name: 'Home', href: '/' },
   { name: 'Services', href: '/services' },
@@ -39,6 +43,9 @@ const jsonLd = [
     description: data.description,
     url: `/services/${entry.slug}`,
   }),
+  ...(data.faqs && data.faqs.length > 0
+    ? [faqJsonLd(data.faqs.map((f) => ({ question: f.question, answer: f.answer })))]
+    : []),
 ];
 
 const familyLabel: Record<string, string> = {
@@ -180,6 +187,52 @@ const h2s = headings.filter((h) => h.depth === 2);
       </div>
     </div>
   </section>
+
+  {hasEmiratePages && (
+    <section class="ab-section">
+      <div class="ab-container">
+        <Reveal>
+          <div class="ab-eyebrow-line">Available across the UAE</div>
+          <h2 class="ab-display ab-h2" style="max-width:740px;margin-bottom:32px;">
+            {data.code} consultants in your emirate.
+          </h2>
+          <p style="font-size:17px;color:var(--ab-ink-soft);line-height:1.65;max-width:62ch;margin:0 0 40px;">
+            We deliver {data.code} engagements across all seven emirates. The pages below cover emirate-specific regulators, sector mix, and engagement logistics.
+          </p>
+        </Reveal>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;" class="emirate-grid">
+          {emirateOrder.map((eKey, i) => {
+            const e = emirates[eKey];
+            return (
+              <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+                <a href={`/services/${entry.slug}/${eKey}`} class="ab-spot" style="padding:24px;text-decoration:none;color:inherit;display:block;height:100%;">
+                  <span class="ab-tag muted">Emirate</span>
+                  <h3 style="font-family:var(--ab-font-display);font-size:22px;font-weight:600;color:var(--ab-navy);letter-spacing:-0.01em;margin:14px 0 10px;">{e.name}</h3>
+                  <p style="font-size:13px;color:var(--ab-ink-soft);line-height:1.55;margin:0;">{data.code} consulting in {e.name} — regulators, sector mix, engagement logistics.</p>
+                  <div style="margin-top:18px;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ab-navy);font-weight:600;">
+                    Open guide <Icon name="arrow-right" size={14} />
+                  </div>
+                </a>
+              </Reveal>
+            );
+          })}
+        </div>
+        <style>
+          @media (max-width: 960px) { .emirate-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+          @media (max-width: 480px) { .emirate-grid { grid-template-columns: 1fr !important; } }
+        </style>
+      </div>
+    </section>
+  )}
+
+  {data.faqs && data.faqs.length > 0 && (
+    <FAQ
+      items={data.faqs}
+      heading={`${data.code} — questions we hear most often.`}
+      eyebrow={`${data.code} FAQ`}
+      background="paper-dim"
+    />
+  )}
 
   {related.length > 0 && (
     <section class="ab-section">

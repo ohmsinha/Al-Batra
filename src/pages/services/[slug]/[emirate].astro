@@ -1,0 +1,292 @@
+---
+/**
+ * Programmatic Service × Emirate landing pages.
+ *
+ * Generates pages like:
+ *   /services/iso-9001/dubai/
+ *   /services/iso-22000/sharjah/
+ *
+ * Strategy (per `programmatic-seo` skill): above-the-fold answer is emirate-
+ * specific, lower-fold reuses canonical service body. Each page is distinctive
+ * via emirate context — regulators, sector mix, free zones, travel logistics —
+ * not just a swapped city name.
+ */
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import LeadCTA from '../../../components/LeadCTA.astro';
+import Reveal from '../../../components/Reveal.astro';
+import Icon from '../../../components/Icon.astro';
+import FAQ from '../../../components/FAQ.astro';
+import { breadcrumbJsonLd, serviceJsonLd, faqJsonLd, localBusinessLocationJsonLd } from '../../../utils/seo';
+import { emirates, programmaticServices, type EmirateKey } from '../../../data/emirates';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  const targetServices = services.filter((s) => programmaticServices.includes(s.slug));
+  const emirateKeys: EmirateKey[] = ['dubai', 'abu-dhabi', 'sharjah', 'ajman'];
+
+  return targetServices.flatMap((service) =>
+    emirateKeys.map((emirateKey) => ({
+      params: { slug: service.slug, emirate: emirateKey },
+      props: { service, emirateKey },
+    }))
+  );
+}
+
+type Props = {
+  service: CollectionEntry<'services'>;
+  emirateKey: EmirateKey;
+};
+
+const { service, emirateKey } = Astro.props as Props;
+const emirate = emirates[emirateKey];
+const data = service.data;
+
+const pageTitle = `${data.code} Consultants in ${emirate.name} — Fixed-Fee Implementation · Al Batra`;
+const pageDescription = `${data.code} (${data.title}) implementation for ${emirate.name} organisations — fixed-fee, bilingual English + Arabic documentation where required, ${data.timeline.replace('–', '-')} to Stage 2. From Al Batra Management Consultancy, Sharjah HQ.`;
+
+const breadcrumbItems = [
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+  { name: `${data.code} — ${data.title}`, href: `/services/${service.slug}` },
+  { name: emirate.name, href: `/services/${service.slug}/${emirateKey}` },
+];
+
+const jsonLd = [
+  breadcrumbJsonLd(breadcrumbItems),
+  serviceJsonLd({
+    code: data.code,
+    name: `${data.code} — ${data.title} in ${emirate.name}`,
+    description: pageDescription,
+    url: `/services/${service.slug}/${emirateKey}`,
+    emirate: emirate.name,
+  }),
+  localBusinessLocationJsonLd({
+    emirate: emirate.name,
+    serviceName: `${data.code} consulting`,
+  }),
+  ...(data.faqs && data.faqs.length > 0
+    ? [faqJsonLd(data.faqs.map((f) => ({ question: f.question, answer: f.answer })))]
+    : []),
+];
+
+const familyLabel: Record<string, string> = {
+  QMS: 'Quality',
+  EMS: 'Environment',
+  OHSMS: 'Health & Safety',
+  FSMS: 'Food Safety',
+  ISMS: 'Information Security',
+  IMS: 'Integrated',
+  Sector: 'Sector-specific',
+};
+
+const familyIcons: Record<string, string> = {
+  QMS: 'gauge',
+  EMS: 'leaf',
+  OHSMS: 'shield',
+  FSMS: 'utensils',
+  ISMS: 'lock',
+  IMS: 'route',
+  Sector: 'building',
+};
+
+// Emirate-specific extra FAQs blended with service FAQs
+const emirateFaqs = [
+  {
+    question: `Do you serve clients in ${emirate.name}?`,
+    answer: `Yes. ${emirate.travelNote} ${data.code} engagements in ${emirate.name} run to the same scope, fee structure, and timeline as our Sharjah and other-emirate engagements — a fixed fee, weekly on-site, single lead consultant from kick-off through Stage 2.`,
+  },
+  {
+    question: `Which ${emirate.name} regulators are relevant to ${data.code}?`,
+    answer: `${emirate.regulators.join(', ')}. The certification body audit (Stage 1 + Stage 2) is conducted by an independent IAF-accredited certifier, not by the regulator. We coordinate with the regulator only where the standard interacts with a licensing or registration touchpoint specific to ${emirate.name}.`,
+  },
+  ...(data.faqs ?? []),
+];
+---
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint-fine" style="position:absolute;inset:0;opacity:.7;mask-image:radial-gradient(ellipse at 100% 0%, #000 0%, transparent 60%);-webkit-mask-image:radial-gradient(ellipse at 100% 0%, #000 0%, transparent 60%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Services', href: '/services' },
+        { label: `${data.code} — ${data.title}`, href: `/services/${service.slug}` },
+        { label: emirate.name },
+      ]} />
+      <div class="ab-page-head-grid" style="margin-top:32px;">
+        <Reveal>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap;">
+            <span class="ab-disk gold"><Icon name={familyIcons[data.family] as any} size={22} /></span>
+            <span class="ab-tag">{data.code}</span>
+            <span style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-steel);">{familyLabel[data.family]}</span>
+            <span style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-red);">· {emirate.name}</span>
+          </div>
+          <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">
+            {data.code} Implementation<br />
+            in <span class="accent">{emirate.name}</span>
+          </h1>
+          <p class="ab-lead" style="margin-top:24px;">
+            {emirate.positioning}
+            {' '}
+            For {emirate.name} organisations, Al Batra delivers {data.code} on a fixed fee, with bilingual English + Arabic documentation where the certification body requires it, in {data.timeline} from kick-off to Stage 2 audit.
+          </p>
+          <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;">
+            <a href="/contact" class="ab-btn ab-btn-primary">
+              Request a {emirate.name} proposal <Icon name="arrow-right" size={14} />
+            </a>
+            <a href={`/services/${service.slug}`} class="ab-btn ab-btn-secondary">
+              Read the full {data.code} guide
+            </a>
+          </div>
+        </Reveal>
+
+        <Reveal delay={1}>
+          <div class="ab-spot" style="padding:32px;">
+            <div class="ab-tag">In {emirate.name}</div>
+            <ul class="ab-glance" style="margin-top:18px;">
+              <li><span>Standard</span><span>{data.code}</span></li>
+              <li><span>Timeline</span><span>{data.timeline}</span></li>
+              <li><span>Engagement</span><span>{data.engagementModel}</span></li>
+              <li><span>On-site cadence</span><span>{data.onSiteCadence}</span></li>
+              <li><span>Documentation</span><span>{data.documentationLanguages}</span></li>
+              <li><span>Travel</span><span style="font-size:12px;text-align:right;max-width:60%;">{emirate.travelNote.split('—')[0].trim()}</span></li>
+            </ul>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- Emirate context -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:flex-start;" class="ctx-grid">
+        <Reveal>
+          <span class="ab-eyebrow-line">{emirate.name} context</span>
+          <h2 class="ab-display ab-h2" style="margin-bottom:24px;">
+            Why {data.code} engagements in {emirate.name} look the way they do.
+          </h2>
+          <div style="font-size:17px;line-height:1.65;color:var(--ab-ink-soft);display:flex;flex-direction:column;gap:18px;">
+            <p>{emirate.positioning}</p>
+            <p>
+              {emirate.name}'s sector mix — {emirate.sectorMix.toLowerCase()} — shapes how {data.code} typically gets scoped and what the certification body looks for during Stage 2. Our {emirate.name} engagements account for that operating reality from the gap analysis onwards, not as an afterthought.
+            </p>
+            <p>
+              {emirate.travelNote}
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={1}>
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <div class="ab-spot" style="padding:28px;">
+              <div class="ab-tag">Regulators &amp; authorities</div>
+              <ul style="list-style:none;padding:0;margin:18px 0 0;display:flex;flex-direction:column;gap:10px;">
+                {emirate.regulators.map((r) => (
+                  <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ab-ink-soft);">
+                    <span style="width:5px;height:5px;background:var(--ab-red);border-radius:50%;"></span>
+                    {r}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="ab-spot" style="padding:28px;">
+              <div class="ab-tag">Free zones &amp; business clusters</div>
+              <div class="ab-pillbar" style="margin-top:18px;">
+                {emirate.clusters.map((c) => <span class="ab-pill">{c}</span>)}
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+      <style>
+        @media (max-width: 960px) { .ctx-grid { grid-template-columns: 1fr !important; gap: 40px !important; } }
+      </style>
+    </div>
+  </section>
+
+  <!-- Service body (reused, summarised) -->
+  <section class="ab-section ab-bg-paper-dim">
+    <div class="ab-container">
+      <Reveal>
+        <span class="ab-eyebrow-line">What we deliver</span>
+        <h2 class="ab-display ab-h2" style="max-width:720px;margin-bottom:32px;">
+          The {data.code} engagement we run for {emirate.name} organisations.
+        </h2>
+        <p style="font-size:17px;color:var(--ab-ink-soft);line-height:1.65;max-width:62ch;margin:0 0 40px;">
+          {data.description}
+        </p>
+      </Reveal>
+
+      <div class="ab-ladder">
+        {[
+          { n: '01', t: 'Gap analysis',     d: `Clause-by-clause on-site review of your ${emirate.name} operation against ${data.code}.`,                                          meta: 'Wks 1–2' },
+          { n: '02', t: 'Documentation',    d: `Manual, procedures and records written for your operation — bilingual where the certification body requires it.`,                  meta: 'Wks 2–6' },
+          { n: '03', t: 'Implementation',   d: 'On-site rollout, awareness sessions for nominated staff, and a working evidence trail your auditors can follow.',                  meta: 'Wks 4–10' },
+          { n: '04', t: 'Internal audit',   d: 'Audit cycle, findings log, corrective actions tracked to closure, and management review minuted.',                                  meta: 'Wks 8–11' },
+          { n: '05', t: 'Certification',    d: 'Stage 1 + Stage 2 with an IAF-accredited certification body. Non-conformity closure handled.',                                       meta: 'Wks 12+' },
+        ].map((p, i) => (
+          <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+            <div class="ab-ladder__step">
+              <div class="ab-ladder__num">{p.n}</div>
+              <div>
+                <h3 class="ab-ladder__head">{p.t}</h3>
+                <p class="ab-ladder__body">{p.d}</p>
+              </div>
+              <div class="ab-ladder__meta">{p.meta}</div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      <Reveal delay={3}>
+        <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
+          <a href={`/services/${service.slug}`} class="ab-btn ab-btn-primary">
+            Read the full {data.code} guide <Icon name="arrow-right" size={14} />
+          </a>
+          <a href="/pricing" class="ab-btn ab-btn-secondary">See pricing &amp; engagement</a>
+          <a href="/coverage" class="ab-btn ab-btn-secondary">UAE coverage map</a>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Industries served in this emirate -->
+  {data.industries.length > 0 && (
+    <section class="ab-section">
+      <div class="ab-container">
+        <Reveal>
+          <div class="ab-eyebrow-line">Common in {emirate.name}</div>
+          <h2 class="ab-display ab-h2" style="max-width:760px;margin-bottom:32px;">
+            {data.code} is most often requested in {emirate.name} by:
+          </h2>
+        </Reveal>
+        <div class="ab-pillbar" style="margin-top:0;">
+          {data.industries.map((ind) => <span class="ab-pill" style="font-size:13px;padding:10px 16px;">{ind}</span>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- FAQs (emirate + service combined) -->
+  {emirateFaqs.length > 0 && (
+    <FAQ
+      items={emirateFaqs}
+      heading={`${data.code} in ${emirate.name} — common questions.`}
+      eyebrow={`${emirate.name} FAQ`}
+      background="paper-dim"
+    />
+  )}
+
+  <LeadCTA
+    heading={`Talk to a consultant about ${data.code} in ${emirate.name}.`}
+    body={`We respond within one working day. Tell us your sector, site count, and target certification date — we will scope and price within a working week.`}
+  />
+</BaseLayout>

@@ -15,6 +15,11 @@ const services = defineCollection({
     documentationLanguages: z.string().default('English + Arabic'),
     industries: z.array(z.string()).default([]),
     relatedStandards: z.array(z.string()).default([]),
+    /** Service-specific FAQs rendered with FAQPage schema for AEO/GEO */
+    faqs: z.array(z.object({
+      question: z.string(),
+      answer: z.string(),
+    })).default([]),
     seoTitle: z.string().optional(),
     seoDescription: z.string().optional(),
     ogImage: z.string().optional(),
