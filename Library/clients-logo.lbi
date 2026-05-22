@@ -1,0 +1,47 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><section class="client-con mt60">
+  <div class="container ac">
+    <h2 class="title_bg">Our Clients</h2>
+    <div class="owl-carousel owl-theme mt30">
+      <div class="item">
+        <div class="inner">
+          <figure><img src="../images/clients-logos/1.png" alt=""></figure>
+        </div>
+      </div>
+      <div class="item">
+        <div class="inner">
+          <figure><img src="../images/clients-logos/2.png" alt=""></figure>
+        </div>
+      </div>
+      <div class="item">
+        <div class="inner">
+          <figure><img src="../images/clients-logos/3.png" alt=""></figure>
+        </div>
+      </div>
+      <div class="item">
+        <div class="inner">
+          <figure><img src="../images/clients-logos/4.png" alt=""></figure>
+        </div>
+      </div>
+      <div class="item">
+        <div class="inner">
+          <figure><img src="../images/clients-logos/5.png" alt=""></figure>
+        </div>
+      </div>
+      <div class="item">
+        <div class="inner">
+          <figure><img src="../images/clients-logos/6.png" alt=""></figure>
+        </div>
+      </div>
+      <div class="item">
+        <div class="inner">
+          <figure><img src="../images/clients-logos/7.png" alt=""></figure>
+        </div>
+      </div>
+      <div class="item">
+        <div class="inner">
+          <figure><img src="../images/clients-logos/8.png" alt=""></figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
