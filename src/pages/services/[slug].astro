@@ -1,0 +1,213 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import LeadCTA from '../../components/LeadCTA.astro';
+import Reveal from '../../components/Reveal.astro';
+import Icon from '../../components/Icon.astro';
+import { standards } from '../../data/standards';
+import { breadcrumbJsonLd, serviceJsonLd } from '../../utils/seo';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('services');
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+type Props = { entry: CollectionEntry<'services'> };
+const { entry } = Astro.props as Props;
+const { Content, headings } = await entry.render();
+const data = entry.data;
+
+const related = standards
+  .filter((s) => data.relatedStandards.includes(s.slug ?? ''))
+  .filter((s) => s.slug);
+
+const breadcrumbItems = [
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services' },
+  { name: `${data.code} — ${data.title}`, href: `/services/${entry.slug}` },
+];
+
+const jsonLd = [
+  breadcrumbJsonLd(breadcrumbItems),
+  serviceJsonLd({
+    code: data.code,
+    name: `${data.code} — ${data.title}`,
+    description: data.description,
+    url: `/services/${entry.slug}`,
+  }),
+];
+
+const familyLabel: Record<string, string> = {
+  QMS: 'Quality',
+  EMS: 'Environment',
+  OHSMS: 'Health & Safety',
+  FSMS: 'Food Safety',
+  ISMS: 'Information Security',
+  IMS: 'Integrated',
+  Sector: 'Sector-specific',
+};
+
+const familyIcons: Record<string, string> = {
+  QMS: 'gauge',
+  EMS: 'leaf',
+  OHSMS: 'shield',
+  FSMS: 'utensils',
+  ISMS: 'lock',
+  IMS: 'route',
+  Sector: 'building',
+};
+
+const h2s = headings.filter((h) => h.depth === 2);
+---
+<BaseLayout
+  title={data.seoTitle ?? `${data.code} — ${data.title}`}
+  description={data.seoDescription ?? data.summary}
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint-fine" style="position:absolute;inset:0;opacity:.7;mask-image:radial-gradient(ellipse at 100% 0%, #000 0%, transparent 60%);-webkit-mask-image:radial-gradient(ellipse at 100% 0%, #000 0%, transparent 60%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Services', href: '/services' },
+        { label: `${data.code} — ${data.title}` },
+      ]} />
+      <div class="ab-page-head-grid" style="margin-top:32px;">
+        <Reveal>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+            <span class="ab-disk gold"><Icon name={familyIcons[data.family] as any} size={22} /></span>
+            <span class="ab-tag">{data.code}</span>
+            <span style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-steel);">{familyLabel[data.family]}</span>
+          </div>
+          <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">{data.title}</h1>
+          <p class="ab-lead" style="margin-top:20px;">{data.description}</p>
+          <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;">
+            <a href="/contact" class="ab-btn ab-btn-primary">Request a fixed-fee proposal <Icon name="arrow-right" size={14} /></a>
+            <a href="#process" class="ab-btn ab-btn-secondary">See the engagement</a>
+          </div>
+        </Reveal>
+
+        <!-- At-a-glance card -->
+        <Reveal delay={1}>
+          <div class="ab-spot" style="padding:32px;">
+            <div class="ab-tag" style="margin-bottom:18px;">At a glance</div>
+            <ul class="ab-glance" style="margin:0;">
+              <li><span>Timeline</span><span>{data.timeline}</span></li>
+              <li><span>Engagement</span><span>{data.engagementModel}</span></li>
+              <li><span>On-site visits</span><span>{data.onSiteCadence}</span></li>
+              <li><span>Documentation</span><span>{data.documentationLanguages}</span></li>
+              <li><span>Family</span><span>{familyLabel[data.family]}</span></li>
+            </ul>
+            {data.industries.length > 0 && (
+              <div style="margin-top:24px;padding-top:18px;border-top:1px solid var(--ab-line-cool);">
+                <div class="ab-tag muted" style="margin-bottom:10px;">Common industries</div>
+                <div class="ab-pillbar" style="margin-top:0;">
+                  {data.industries.map((ind) => <span class="ab-pill">{ind}</span>)}
+                </div>
+              </div>
+            )}
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content with TOC -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <div class="ab-article-layout">
+        <div>
+          <Reveal>
+            <article class="ab-prose">
+              <Content />
+            </article>
+          </Reveal>
+        </div>
+        {h2s.length > 0 && (
+          <aside class="ab-toc">
+            <div class="ab-toc__label">On this page</div>
+            <ol>
+              {h2s.map((h) => (
+                <li><a href={`#${h.slug}`}>{h.text}</a></li>
+              ))}
+            </ol>
+            <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--ab-line-cool);">
+              <div class="ab-toc__label" style="color:var(--ab-steel);">Ready to engage?</div>
+              <a href="/contact" class="ab-btn ab-btn-primary" style="width:100%;justify-content:center;margin-top:8px;">
+                Request a proposal <Icon name="arrow-right" size={14} />
+              </a>
+              <a href="/methodology" class="ab-link" style="display:block;text-align:center;margin-top:14px;font-size:12px;">See the methodology →</a>
+            </div>
+          </aside>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Process strip -->
+  <section class="ab-section ab-bg-paper-dim" id="process">
+    <div class="ab-container">
+      <Reveal>
+        <div class="ab-eyebrow-line">Engagement model</div>
+        <h2 class="ab-display ab-h2" style="max-width:740px;margin-bottom:48px;">
+          Five phases. Fixed fee. No open-ended retainer.
+        </h2>
+      </Reveal>
+      <div class="ab-ladder">
+        {[
+          { n: '01', t: 'Gap analysis', d: `Clause-by-clause walk-through against ${data.code}. Findings logged with the responsible owner, action required and target close-out date.`, meta: 'Wks 1–2' },
+          { n: '02', t: 'Documentation', d: 'Manual, procedures, records — bilingual where required.', meta: 'Wks 2–6' },
+          { n: '03', t: 'Implementation', d: 'On-site rollout, awareness sessions, evidence trail.', meta: 'Wks 4–10' },
+          { n: '04', t: 'Internal audit', d: 'Full internal audit cycle, findings log, corrective actions, management review.', meta: 'Wks 8–11' },
+          { n: '05', t: 'Certification', d: 'Stage 1 + Stage 2 support, non-conformity closure, first surveillance audit.', meta: 'Wks 12+' },
+        ].map((p, i) => (
+          <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+            <div class="ab-ladder__step">
+              <div class="ab-ladder__num">{p.n}</div>
+              <div>
+                <h3 class="ab-ladder__head">{p.t}</h3>
+                <p class="ab-ladder__body">{p.d}</p>
+              </div>
+              <div class="ab-ladder__meta">{p.meta}</div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="ab-section">
+      <div class="ab-container">
+        <Reveal>
+          <div class="ab-eyebrow-line">Frequently combined with</div>
+          <h2 class="ab-display ab-h2" style="margin-bottom:40px;max-width:760px;">
+            Related standards we implement alongside {data.code}.
+          </h2>
+        </Reveal>
+        <div class="ab-services-grid">
+          {related.map((s, i) => (
+            <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+              <a class="ab-service-card" href={`/services/${s.slug}`}>
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+                  <span class="ab-disk gold"><Icon name="document" size={18} /></span>
+                  <span class="ab-service-code">{s.code}</span>
+                </div>
+                <h3 class="ab-service-title" style="margin-top:18px;">{s.title}</h3>
+                <div style="flex:1;"></div>
+                <div class="ab-service-card-cta" style="display:flex;align-items:center;gap:6px;">Learn more <Icon name="arrow-right" size={14} /></div>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <LeadCTA />
+</BaseLayout>

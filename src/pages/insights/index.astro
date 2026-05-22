@@ -1,0 +1,156 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import LeadCTA from '../../components/LeadCTA.astro';
+import Reveal from '../../components/Reveal.astro';
+import Icon from '../../components/Icon.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { breadcrumbJsonLd } from '../../utils/seo';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+
+const formatter = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+const tags = Array.from(new Set(posts.map((p) => p.data.tag))).sort();
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: 'Home', href: '/' },
+    { name: 'Insights', href: '/insights' },
+  ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: 'Al Batra Insights',
+    description: 'Guidance and analysis on ISO certification and management systems for UAE organisations.',
+    publisher: { '@id': 'https://albatraconsultants.com/#organization' },
+    blogPost: posts.map((p) => ({
+      '@type': 'BlogPosting',
+      headline: p.data.title,
+      url: `https://albatraconsultants.com/insights/${p.slug}`,
+      datePublished: p.data.publishedAt.toISOString(),
+    })),
+  },
+];
+
+const featured = posts[0];
+const rest = posts.slice(1);
+---
+<BaseLayout
+  title="Insights — ISO certification guidance for UAE organisations"
+  description="Long-form analysis on ISO standards, certification readiness, food safety regulation and management system implementation in the UAE."
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.6;mask-image:radial-gradient(ellipse at 90% 80%, transparent 0%, #000 65%);-webkit-mask-image:radial-gradient(ellipse at 90% 80%, transparent 0%, #000 65%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Insights' }]} />
+      <Reveal>
+        <div style="margin-top:32px;display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:end;">
+          <div>
+            <span class="ab-eyebrow-line">Insights</span>
+            <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">
+              Long-form notes from <span class="accent">the consultancy floor</span>.
+            </h1>
+            <p class="ab-lead" style="margin-top:24px;">
+              What is changing in ISO standards, what UAE regulators are looking at, and what to do about it. Written by the consultants delivering the engagements.
+            </p>
+          </div>
+          <div>
+            <div style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-steel);margin-bottom:12px;">Topics</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              {tags.map((t) => <span class="ab-pill">{t}</span>)}
+            </div>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Featured -->
+  {featured && (
+    <section class="ab-section">
+      <div class="ab-container">
+        <Reveal>
+          <a href={`/insights/${featured.slug}`} style="display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center;text-decoration:none;color:inherit;" class="feat-grid">
+            <ImageSlot
+              aspect="5-4"
+              variant="navy"
+              label="Featured · Insight cover"
+              caption={featured.data.title}
+              prompt={`Editorial cover image for an Al Batra insight titled "${featured.data.title}". Topic: ${featured.data.tag}. Document-led composition, restrained navy/sand/gold palette, no human faces.`}
+            />
+            <div>
+              <span class="ab-tag">Featured · {featured.data.tag}</span>
+              <h2 style="font-family:var(--ab-font-display);font-size:clamp(28px,3vw,40px);font-weight:600;color:var(--ab-navy);letter-spacing:-0.02em;line-height:1.15;margin:18px 0 18px;text-wrap:balance;">
+                {featured.data.title}
+              </h2>
+              <p style="font-size:17px;color:var(--ab-ink-soft);line-height:1.6;margin:0 0 24px;">{featured.data.summary}</p>
+              <div style="display:flex;align-items:center;gap:14px;font-size:13px;color:var(--ab-steel);">
+                <span>By {featured.data.author}{featured.data.authorRole ? ` · ${featured.data.authorRole}` : ''}</span>
+                <span style="width:3px;height:3px;background:var(--ab-mute);border-radius:50%;"></span>
+                <span>{formatter.format(featured.data.publishedAt)}</span>
+                <span style="width:3px;height:3px;background:var(--ab-mute);border-radius:50%;"></span>
+                <span>{featured.data.readingTime} read</span>
+              </div>
+              <div style="margin-top:28px;display:inline-flex;align-items:center;gap:8px;color:var(--ab-navy);font-weight:600;font-size:14px;">
+                Read insight <Icon name="arrow-right" size={14} />
+              </div>
+            </div>
+          </a>
+        </Reveal>
+        <style>
+          @media (max-width: 960px) { .feat-grid { grid-template-columns: 1fr !important; gap: 32px !important; } }
+        </style>
+      </div>
+    </section>
+  )}
+
+  <!-- Rest grid -->
+  {rest.length > 0 && (
+    <section class="ab-section ab-bg-sand">
+      <div class="ab-container">
+        <Reveal>
+          <SectionHead
+            eyebrow="More insights"
+            title="Recent notes from the practice."
+          />
+        </Reveal>
+        <div class="ab-insights-grid">
+          {rest.map((p, i) => (
+            <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+              <a class="ab-insight-card" href={`/insights/${p.slug}`} style="display:flex;flex-direction:column;padding:0;overflow:hidden;">
+                <ImageSlot
+                  aspect="16-9"
+                  variant="navy"
+                  label="Insight cover"
+                  caption={p.data.tag}
+                  prompt={`Editorial cover for "${p.data.title}" — topic: ${p.data.tag}. Document/compliance visual language, navy/sand/gold accents, no people.`}
+                />
+                <div style="padding:24px 26px 26px;flex:1;display:flex;flex-direction:column;">
+                  <div class="ab-insight-tag" style="margin-bottom:14px;">{p.data.tag}</div>
+                  <div class="ab-insight-title" style="margin-top:0;">{p.data.title}</div>
+                  <p style="font-size:14px;color:var(--ab-steel);line-height:1.55;margin:12px 0 0;">{p.data.summary}</p>
+                  <div style="flex:1;"></div>
+                  <div class="ab-insight-meta" style="display:flex;align-items:center;gap:10px;">
+                    <span>{formatter.format(p.data.publishedAt)}</span>
+                    <span style="width:3px;height:3px;background:var(--ab-mute);border-radius:50%;"></span>
+                    <span>{p.data.readingTime} read</span>
+                    <span style="flex:1;"></span>
+                    <Icon name="arrow-up-right" size={16} />
+                  </div>
+                </div>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <LeadCTA />
+</BaseLayout>

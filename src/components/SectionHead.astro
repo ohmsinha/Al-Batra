@@ -1,0 +1,47 @@
+---
+/**
+ * Section heading scaffold: eyebrow + h2 + (optional) lead + (optional) link.
+ * Use inside any section. Keeps rhythm consistent across the site.
+ */
+type Props = {
+  eyebrow?: string;
+  title: string;
+  titleHtml?: string;
+  lead?: string;
+  link?: { href: string; label: string };
+  align?: 'left' | 'center';
+  variant?: 'default' | 'inverse';
+  class?: string;
+};
+const {
+  eyebrow,
+  title,
+  titleHtml,
+  lead,
+  link,
+  align = 'left',
+  variant = 'default',
+  class: className = '',
+} = Astro.props as Props;
+const isInverse = variant === 'inverse';
+---
+<div class={`ab-section-head-v2 ${className}`} style={`text-align:${align};${align === 'center' ? 'grid-template-columns:1fr;' : ''}${isInverse ? 'border-bottom-color:rgba(255,255,255,.18);' : ''}`}>
+  <div>
+    {eyebrow && (
+      <span class="ab-eyebrow-line" style={isInverse ? 'color:var(--ab-gold);' : ''}>
+        {eyebrow}
+      </span>
+    )}
+    {titleHtml ? (
+      <h2 class="ab-display ab-h2" style={isInverse ? 'color:#fff;' : ''} set:html={titleHtml} />
+    ) : (
+      <h2 class="ab-display ab-h2" style={isInverse ? 'color:#fff;' : ''}>{title}</h2>
+    )}
+    {lead && <p class="lead" style={isInverse ? 'color:rgba(255,255,255,.75);' : ''}>{lead}</p>}
+  </div>
+  {link && (
+    <a href={link.href} class="ab-link link" style={isInverse ? 'color:var(--ab-gold);' : ''}>
+      {link.label} →
+    </a>
+  )}
+</div>

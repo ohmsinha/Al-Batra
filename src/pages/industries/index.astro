@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import LeadCTA from '../../components/LeadCTA.astro';
+import Reveal from '../../components/Reveal.astro';
+import Icon from '../../components/Icon.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbJsonLd } from '../../utils/seo';
+
+const sectors = (await getCollection('industries'))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const sectorIcons: Record<string, string> = {
+  hospitality: 'utensils',
+  manufacturing: 'wrench',
+  logistics: 'truck',
+  healthcare: 'heart-pulse',
+  energy: 'spark',
+  'professional-services': 'briefcase',
+};
+
+const sectorPrompts: Record<string, string> = {
+  hospitality: 'Editorial photo of a UAE hotel back-of-house — a chef in whites checking a temperature log against a digital probe. Warm sand-tinted light, document close-up in focus.',
+  manufacturing: 'Editorial wide shot inside a UAE light-industrial facility — operator in PPE reviewing an SOP printed on a wall-mounted clipboard, soft directional light.',
+  logistics: 'Editorial photo of a UAE freight forwarder operations bay — clipboard with shipment manifest in the foreground, container truck soft-focused behind.',
+  healthcare: 'Editorial photo of a UAE diagnostic lab bench — calibration record on a tablet, sterile environment, no patient faces, navy lab coats.',
+  energy: 'Editorial photo of UAE utility-scale solar operator reviewing an energy register on a tablet in front of arrays. Late-afternoon warm light.',
+  'professional-services': 'Editorial photo of a UAE professional-services office — two consultants reviewing a printed risk register on a glass meeting table, soft daylight.',
+};
+
+const jsonLd = [breadcrumbJsonLd([
+  { name: 'Home', href: '/' },
+  { name: 'Industries', href: '/industries' },
+])];
+---
+<BaseLayout
+  title="Industries served — UAE ISO certification by sector"
+  description="Al Batra implements ISO management systems by sector — hospitality, manufacturing, logistics, healthcare, energy and professional services — across the UAE."
+  jsonLd={jsonLd}
+>
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.7;mask-image:radial-gradient(ellipse at 90% 80%, transparent 0%, #000 60%);-webkit-mask-image:radial-gradient(ellipse at 90% 80%, transparent 0%, #000 60%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Industries' }]} />
+      <div style="margin-top:32px;display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:end;">
+        <Reveal>
+          <span class="ab-eyebrow-line">Industries served</span>
+          <h1 class="ab-display ab-h1-page" style="max-width:20ch;text-wrap:balance;">
+            Practice areas built around <span class="accent">the sectors we know</span>.
+          </h1>
+          <p class="ab-lead" style="margin-top:24px;">
+            We do not run a single template across every client. Our consultants specialise by sector — the standards we recommend, the documentation we write and the auditors we prepare you for reflect the operation, not a generic playbook.
+          </p>
+        </Reveal>
+        <Reveal delay={2}>
+          <div style="display:flex;gap:24px;flex-wrap:wrap;">
+            <div class="ab-stat">
+              <div class="ab-stat__rule"></div>
+              <div class="ab-stat__num">6</div>
+              <div class="ab-stat__label">Primary sector practices</div>
+            </div>
+            <div class="ab-stat">
+              <div class="ab-stat__rule" style="background:var(--ab-gold);"></div>
+              <div class="ab-stat__num">12<span class="unit">+</span></div>
+              <div class="ab-stat__label">Sub-sectors served in UAE</div>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <section class="ab-section">
+    <div class="ab-container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        {sectors.map((s, i) => (
+          <Reveal delay={Math.min(5, ((i % 2) + 1)) as 1|2|3|4|5}>
+            <a href={`/industries/${s.slug}`} class="ab-case" style="text-decoration:none;color:inherit;">
+              <ImageSlot
+                aspect="16-9"
+                variant="navy"
+                label={`Industry · ${s.data.title}`}
+                caption={s.data.title}
+                prompt={sectorPrompts[s.slug] ?? `Editorial UAE business photograph for the ${s.data.title} sector.`}
+                class="ab-case__media"
+              />
+              <div class="ab-case__body">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                  <span class="ab-disk gold sm"><Icon name={(sectorIcons[s.slug] ?? 'building') as any} size={14} /></span>
+                  <span class="ab-case__industry">{s.data.codes[0]} · +{s.data.codes.length - 1} more</span>
+                </div>
+                <h3 class="ab-case__title">{s.data.title}</h3>
+                <p class="ab-case__desc">{s.data.summary}</p>
+                <div class="ab-case__meta">
+                  {s.data.codes.slice(0, 4).map((c) => <span class="ab-pill">{c}</span>)}
+                </div>
+                <div style="margin-top:18px;display:flex;align-items:center;gap:6px;color:var(--ab-navy);font-size:13px;font-weight:600;">
+                  Sector implementation guide <Icon name="arrow-right" size={14} />
+                </div>
+              </div>
+            </a>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <LeadCTA />
+</BaseLayout>

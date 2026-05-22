@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1B3D62"/>
+      <stop offset="1" stop-color="#0E2A47"/>
+    </linearGradient>
+    <radialGradient id="r" cx="0.25" cy="0.3" r="0.6">
+      <stop offset="0" stop-color="rgba(201,169,110,0.18)"/>
+      <stop offset="1" stop-color="rgba(201,169,110,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <rect width="1200" height="630" fill="url(#r)"/>
+  <g transform="translate(80,80)">
+    <text x="0" y="0" font-family="Inter Tight, Inter, sans-serif" font-size="14" font-weight="600" letter-spacing="3" fill="#C9A96E" text-transform="uppercase">AL BATRA · UAE</text>
+  </g>
+  <g transform="translate(80,300)">
+    <text x="0" y="0" font-family="Inter Tight, Inter, sans-serif" font-size="64" font-weight="600" fill="#FFFFFF" letter-spacing="-1.5">ISO certification,</text>
+    <text x="0" y="80" font-family="Inter Tight, Inter, sans-serif" font-style="italic" font-size="64" font-weight="600" fill="#F6F1E8" letter-spacing="-1.5">implemented to pass audit.</text>
+  </g>
+  <g transform="translate(80,520)">
+    <text x="0" y="0" font-family="Inter, sans-serif" font-size="22" fill="rgba(255,255,255,0.78)">Al Batra Management Consultancy · UAE-wide</text>
+  </g>
+  <g transform="translate(1060,510)">
+    <circle cx="0" cy="0" r="40" fill="none" stroke="#B91C26" stroke-width="3"/>
+    <text x="0" y="8" font-family="Inter Tight, Inter, sans-serif" font-size="22" font-weight="700" fill="#F6F1E8" text-anchor="middle">AB</text>
+  </g>
+</svg>

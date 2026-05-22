@@ -1,0 +1,222 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import FAQ from '../components/FAQ.astro';
+import Reveal from '../components/Reveal.astro';
+import Icon from '../components/Icon.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbJsonLd, faqJsonLd } from '../utils/seo';
+import { company } from '../data/company';
+import { standards } from '../data/standards';
+
+const faqEntries = (await getCollection('faq'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => e.data);
+
+const dropdownItems = standards
+  .filter((s) => s.slug)
+  .map((s) => ({ value: s.slug, label: `${s.code} — ${s.title}` }));
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: 'Home', href: '/' },
+    { name: 'Contact', href: '/contact' },
+  ]),
+  faqJsonLd(faqEntries.map((e) => ({ question: e.question, answer: e.answer }))),
+];
+---
+<BaseLayout
+  title="Contact & FAQ"
+  description="Request a fixed-fee ISO certification proposal from Al Batra Management Consultancy. Sharjah head office, UAE-wide on-site delivery."
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.6;mask-image:radial-gradient(ellipse at 80% 100%, transparent 0%, #000 65%);-webkit-mask-image:radial-gradient(ellipse at 80% 100%, transparent 0%, #000 65%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Contact' }]} />
+      <Reveal>
+        <div style="margin-top:32px;max-width:720px;">
+          <span class="ab-eyebrow-line">Request a proposal</span>
+          <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">
+            Start with <span class="accent">a written gap analysis</span> and a fixed-fee plan.
+          </h1>
+          <p class="ab-lead" style="margin-top:24px;">
+            Tell us about your organisation and the standards you intend to certify against. Our consulting team will respond with a written gap analysis and a fixed-fee implementation proposal — usually within one working day.
+          </p>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Response promise strip -->
+  <section style="background:#fff;border-top:1px solid var(--ab-line-warm);border-bottom:1px solid var(--ab-line-warm);">
+    <div class="ab-container" style="padding:0;">
+      <Reveal>
+        <div class="ab-ribbon" style="border-left:0;border-right:0;border-radius:0;">
+          <div class="ab-ribbon__cell">
+            <span class="ab-tag muted">Response</span>
+            <span class="ab-ribbon__num" style="font-size:24px;">&lt; 1 working day</span>
+            <span class="ab-ribbon__label">From a consultant, not a sales channel</span>
+          </div>
+          <div class="ab-ribbon__cell">
+            <span class="ab-tag muted">Office hours</span>
+            <span class="ab-ribbon__num" style="font-size:18px;line-height:1.3;">Sun–Thu · 09:00–18:00</span>
+            <span class="ab-ribbon__label">Gulf Standard Time</span>
+          </div>
+          <div class="ab-ribbon__cell">
+            <span class="ab-tag muted">Channels</span>
+            <span class="ab-ribbon__num" style="font-size:18px;line-height:1.3;">Form · Email · Phone</span>
+            <span class="ab-ribbon__label">Same response time for all three</span>
+          </div>
+          <div class="ab-ribbon__cell">
+            <span class="ab-tag muted">Languages</span>
+            <span class="ab-ribbon__num" style="font-size:18px;line-height:1.3;">EN · العربية</span>
+            <span class="ab-ribbon__label">Either, at proposal stage</span>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Form + sidebar -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:80px;align-items:flex-start;" class="contact-grid">
+        <Reveal>
+          <form class="ab-form" action="/api/contact" method="post" novalidate style="background:#fff;border:1px solid var(--ab-line-cool);border-radius:var(--ab-r-frame);padding:40px;">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--ab-line-cool);">
+              <span class="ab-disk gold lg"><Icon name="send" size={24} /></span>
+              <div>
+                <div class="ab-tag">Request a proposal</div>
+                <h2 style="font-family:var(--ab-font-display);font-size:24px;font-weight:600;color:var(--ab-navy);margin:6px 0 0;letter-spacing:-0.01em;">Tell us about your engagement.</h2>
+              </div>
+            </div>
+
+            <div>
+              <label class="ab-label" for="name">Full name</label>
+              <input class="ab-input" id="name" name="name" required autocomplete="name" placeholder="Your name" />
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <label class="ab-label" for="email">Work email</label>
+                <input class="ab-input" id="email" type="email" name="email" required autocomplete="email" placeholder="name@company.ae" />
+              </div>
+              <div>
+                <label class="ab-label" for="phone">Phone (optional)</label>
+                <input class="ab-input" id="phone" type="tel" name="phone" autocomplete="tel" placeholder="+971 …" />
+              </div>
+            </div>
+            <div>
+              <label class="ab-label" for="company">Company</label>
+              <input class="ab-input" id="company" name="company" required autocomplete="organization" placeholder="Organisation name" />
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <label class="ab-label" for="standard">Standard of interest</label>
+                <select class="ab-input" id="standard" name="standard" required>
+                  <option value="">Select a standard…</option>
+                  {dropdownItems.map((opt) => <option value={opt.value}>{opt.label}</option>)}
+                  <option value="other">Other / Multiple standards</option>
+                </select>
+              </div>
+              <div>
+                <label class="ab-label" for="emirate">Primary location</label>
+                <select class="ab-input" id="emirate" name="emirate" required>
+                  <option value="">Select emirate…</option>
+                  <option>Dubai</option>
+                  <option>Abu Dhabi</option>
+                  <option>Sharjah</option>
+                  <option>Ajman</option>
+                  <option>Ras Al Khaimah</option>
+                  <option>Fujairah</option>
+                  <option>Umm Al Quwain</option>
+                  <option>Other GCC</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="ab-label" for="message">Tell us about your organisation and current readiness</label>
+              <textarea class="ab-textarea" id="message" name="message" placeholder="Headcount, number of sites, any prior management system, target certification date…"></textarea>
+            </div>
+            <button type="submit" class="ab-btn ab-btn-primary" style="justify-content:center;padding:14px 22px;align-self:flex-start;margin-top:6px;">
+              Request a proposal <Icon name="arrow-right" size={16} />
+            </button>
+            <p class="ab-meta" style="margin:4px 0 0;line-height:1.5;">
+              By submitting this form, you agree to be contacted by Al Batra Management Consultancy in connection with your enquiry. We respond within one working day.
+            </p>
+          </form>
+        </Reveal>
+
+        <Reveal delay={1}>
+          <aside style="font-size:14px;color:var(--ab-ink-soft);line-height:1.6;position:sticky;top:120px;">
+            <div class="ab-spot" style="padding:32px;">
+              <div class="ab-tag">Talk directly</div>
+              <div style="font-family:var(--ab-font-display);font-size:22px;font-weight:600;color:var(--ab-navy);line-height:1.3;margin-top:18px;letter-spacing:-0.005em;">
+                {company.address.line1}<br />
+                {company.address.line2}<br />
+                {company.address.city}, {company.address.country}
+              </div>
+
+              <ul style="list-style:none;padding:0;margin:24px 0 0;display:flex;flex-direction:column;gap:12px;">
+                {company.phones.map((p) => (
+                  <li style="display:flex;align-items:center;gap:12px;">
+                    <Icon name="phone" size={16} />
+                    <div>
+                      <span style="color:var(--ab-steel);font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--ab-font-mono);">{p.label}</span>
+                      <a class="ab-link" href={`tel:${p.tel}`} style="display:block;">{p.display}</a>
+                    </div>
+                  </li>
+                ))}
+                <li style="display:flex;align-items:center;gap:12px;">
+                  <Icon name="mail" size={16} />
+                  <a class="ab-link" href={`mailto:${company.email}`}>{company.email}</a>
+                </li>
+                {company.socials.linkedin && (
+                  <li style="display:flex;align-items:center;gap:12px;">
+                    <Icon name="linkedin" size={16} />
+                    <a class="ab-link" href={company.socials.linkedin} rel="noopener" target="_blank">LinkedIn</a>
+                  </li>
+                )}
+              </ul>
+
+              <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--ab-line-cool);">
+                <div class="ab-tag muted" style="margin-bottom:8px;">Working hours</div>
+                <div style="font-family:var(--ab-font-display);font-size:15px;font-weight:500;color:var(--ab-navy);">{company.openingHours}</div>
+              </div>
+
+              <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--ab-line-cool);">
+                <div class="ab-tag muted" style="margin-bottom:8px;">Visiting?</div>
+                <p style="font-size:13px;color:var(--ab-ink-soft);line-height:1.55;margin:0;">
+                  We meet by appointment. Mention your standard of interest when you call — the relevant consultant will join the meeting where possible.
+                </p>
+              </div>
+            </div>
+          </aside>
+        </Reveal>
+      </div>
+      <style>
+        @media (max-width: 960px) { .contact-grid { grid-template-columns: 1fr !important; gap: 40px !important; } }
+      </style>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section style="padding:0;">
+    <div class="ab-container">
+      <Reveal>
+        <iframe
+          title="Map of Al Batra HQ in Sharjah"
+          src={`https://www.google.com/maps?q=${company.geo.latitude},${company.geo.longitude}&z=14&output=embed`}
+          width="100%"
+          height="380"
+          style="border:1px solid var(--ab-line-cool);border-radius:var(--ab-r-frame);display:block;"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </Reveal>
+    </div>
+  </section>
+
+  <FAQ items={faqEntries} heading="Common questions before a first call." background="paper-dim" />
+</BaseLayout>

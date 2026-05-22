@@ -1,0 +1,162 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import LeadCTA from '../../components/LeadCTA.astro';
+import Reveal from '../../components/Reveal.astro';
+import Icon from '../../components/Icon.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+import { breadcrumbJsonLd } from '../../utils/seo';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('cases');
+  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+type Props = { entry: CollectionEntry<'cases'> };
+const { entry } = Astro.props as Props;
+const { Content, headings } = await entry.render();
+const data = entry.data;
+
+const breadcrumbItems = [
+  { name: 'Home', href: '/' },
+  { name: 'Case studies', href: '/case-studies' },
+  { name: data.title, href: `/case-studies/${entry.slug}` },
+];
+
+const jsonLd = [breadcrumbJsonLd(breadcrumbItems)];
+const h2s = headings.filter((h) => h.depth === 2);
+
+const casePrompts: Record<string, string> = {
+  'dubai-hotel-iso22000': 'Editorial hero photo of a UAE hotel central kitchen — gleaming stainless steel, organised dry-goods racks, HACCP form clipped to a wall — warm directional light, no people visible.',
+  'sharjah-manufacturer-9001-45001': 'Editorial wide photo of a UAE industrial fabrication floor — overhead view of a steel-cutting bay, bilingual safety signage, soft morning light through industrial skylights.',
+  'dubai-fintech-iso27001': 'Editorial photo of a sleek DIFC-style office — minimalist meeting room with a glass whiteboard showing a risk register diagram, soft daylight, no people visible.',
+  'abu-dhabi-energy-iso50001': 'Editorial photo of a UAE utility-scale solar farm at dusk — rows of panels stretching to the horizon, warm sky, BESS containers visible in the middle ground.',
+};
+---
+<BaseLayout
+  title={data.seoTitle ?? `${data.title} — Al Batra case study`}
+  description={data.seoDescription ?? data.summary}
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint-fine" style="position:absolute;inset:0;opacity:.6;mask-image:radial-gradient(ellipse at 100% 0%, #000 0%, transparent 60%);-webkit-mask-image:radial-gradient(ellipse at 100% 0%, #000 0%, transparent 60%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Case studies', href: '/case-studies' },
+        { label: data.title },
+      ]} />
+      <Reveal>
+        <div style="margin-top:32px;display:flex;align-items:center;gap:14px;margin-bottom:24px;">
+          <span class="ab-tag">Case study</span>
+          <span style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-steel);">{data.industry} · {data.location}</span>
+        </div>
+        <h1 class="ab-display ab-h1-page" style="text-wrap:balance;max-width:22ch;">{data.title}</h1>
+        <p class="ab-lead" style="margin-top:24px;max-width:62ch;">{data.summary}</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px;">
+          {data.standards.map((s) => <span class="ab-pill">{s}</span>)}
+          <span class="ab-pill" style="background:var(--ab-paper);">{data.timeline}</span>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Cover image -->
+  <section style="background:var(--ab-bg-sand);padding:0 0 56px;">
+    <div class="ab-container">
+      <Reveal>
+        <ImageSlot
+          aspect="16-9"
+          variant="navy"
+          label="Case cover"
+          caption={data.title}
+          prompt={casePrompts[entry.slug] ?? `Editorial photograph for "${data.title}" — ${data.industry} sector in ${data.location}.`}
+          style="margin-top:-40px;box-shadow:var(--ab-sh-lg);"
+        />
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Challenge / Approach / Outcome -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;" class="cap-grid">
+        <Reveal delay={1}>
+          <div class="ab-spot" style="padding:32px;height:100%;">
+            <span class="ab-tag">Challenge</span>
+            <p style="margin-top:18px;font-size:15px;color:var(--ab-ink-soft);line-height:1.65;">{data.challenge}</p>
+          </div>
+        </Reveal>
+        <Reveal delay={2}>
+          <div class="ab-spot" style="padding:32px;height:100%;">
+            <span class="ab-tag">Approach</span>
+            <p style="margin-top:18px;font-size:15px;color:var(--ab-ink-soft);line-height:1.65;">{data.approach}</p>
+          </div>
+        </Reveal>
+        <Reveal delay={3}>
+          <div class="ab-spot invert" style="padding:32px;height:100%;">
+            <span class="ab-tag" style="color:var(--ab-gold);">Outcome</span>
+            <p style="margin-top:18px;font-size:15px;color:rgba(255,255,255,.85);line-height:1.65;">{data.outcome}</p>
+          </div>
+        </Reveal>
+      </div>
+      <style>
+        @media (max-width: 960px) { .cap-grid { grid-template-columns: 1fr !important; } }
+      </style>
+    </div>
+  </section>
+
+  <!-- Metrics ribbon -->
+  {data.metrics.length > 0 && (
+    <section style="background:#fff;border-top:1px solid var(--ab-line-warm);border-bottom:1px solid var(--ab-line-warm);">
+      <div class="ab-container" style="padding:0;">
+        <Reveal>
+          <div class="ab-ribbon" style="border-left:0;border-right:0;border-radius:0;">
+            {data.metrics.slice(0, 4).map((m) => (
+              <div class="ab-ribbon__cell">
+                <span class="ab-ribbon__num">{m.value}</span>
+                <span class="ab-ribbon__label">{m.label}</span>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  )}
+
+  <!-- Long-form content + TOC -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <div class="ab-article-layout">
+        <div>
+          <Reveal>
+            <article class="ab-prose">
+              <Content />
+            </article>
+          </Reveal>
+        </div>
+        {h2s.length > 0 && (
+          <aside class="ab-toc">
+            <div class="ab-toc__label">On this page</div>
+            <ol>
+              {h2s.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+            </ol>
+            <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--ab-line-cool);">
+              <div class="ab-toc__label" style="color:var(--ab-steel);">Standards</div>
+              <div class="ab-pillbar" style="margin-top:8px;">
+                {data.standards.map((s) => <span class="ab-pill">{s}</span>)}
+              </div>
+            </div>
+          </aside>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <LeadCTA
+    heading="Have a similar engagement in mind?"
+    body="If your operation overlaps with the case above — same industry, similar scale, similar standards — we can usually estimate scope and fee within one working day."
+  />
+</BaseLayout>

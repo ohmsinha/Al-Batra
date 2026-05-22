@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import LeadCTA from '../components/LeadCTA.astro';
+import Reveal from '../components/Reveal.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { breadcrumbJsonLd } from '../utils/seo';
+import { company } from '../data/company';
+
+const jsonLd = [breadcrumbJsonLd([
+  { name: 'Home', href: '/' },
+  { name: 'UAE coverage', href: '/coverage' },
+])];
+
+const emirates = [
+  { name: 'Sharjah',         tier: 'Head office',  note: 'Rolla Mall HQ · weekly on-site, all engagements', clients: '180+', x: 53, y: 22 },
+  { name: 'Dubai',           tier: 'Priority',     note: 'Weekly on-site · second-largest practice area', clients: '210+', x: 48, y: 30 },
+  { name: 'Abu Dhabi',       tier: 'Priority',     note: 'Weekly on-site · regulated-industry focus',    clients: '95+',  x: 35, y: 50 },
+  { name: 'Ajman',           tier: 'Secondary',    note: 'On-site by engagement',                         clients: '45+',  x: 55, y: 19 },
+  { name: 'Umm Al Quwain',   tier: 'Secondary',    note: 'On-site by engagement',                         clients: '15+',  x: 58, y: 14 },
+  { name: 'Ras Al Khaimah',  tier: 'Secondary',    note: 'On-site by engagement',                         clients: '30+',  x: 63, y: 10 },
+  { name: 'Fujairah',        tier: 'Secondary',    note: 'On-site by engagement',                         clients: '25+',  x: 75, y: 22 },
+];
+
+const beyond = [
+  { name: 'Saudi Arabia',   note: 'Selected GCC engagements on a project-by-project basis' },
+  { name: 'Oman',           note: 'On request, with travel uplift' },
+  { name: 'Kuwait',         note: 'On request, with travel uplift' },
+  { name: 'Bahrain',        note: 'On request, with travel uplift' },
+];
+---
+<BaseLayout
+  title="UAE Coverage — Al Batra Management Consultancy"
+  description="Headquartered in Sharjah, with consultants delivering ISO implementation on-site across all seven emirates. Selected GCC engagements supported case by case."
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.6;mask-image:radial-gradient(ellipse at 90% 80%, transparent 0%, #000 65%);-webkit-mask-image:radial-gradient(ellipse at 90% 80%, transparent 0%, #000 65%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'UAE coverage' }]} />
+      <Reveal>
+        <div style="margin-top:32px;max-width:720px;">
+          <span class="ab-eyebrow-line">UAE coverage</span>
+          <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">
+            Head office in Sharjah.<br />
+            <span class="accent">Consultants on-site</span> in every emirate.
+          </h1>
+          <p class="ab-lead" style="margin-top:24px;">
+            On-site delivery is the default — most engagements include a weekly consultant visit, with documentation, internal audit and management review carried out on the client site. Below is where, and how often.
+          </p>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <Reveal>
+        <div class="ab-map-grid">
+          <!-- Map visual -->
+          <div style="position:relative;background:var(--ab-sand);border:1px solid var(--ab-line-warm);border-radius:var(--ab-r-frame);aspect-ratio:4/3;padding:24px;overflow:hidden;">
+            <div aria-hidden="true" class="ab-blueprint-fine" style="position:absolute;inset:0;opacity:.4;"></div>
+            <svg viewBox="0 0 100 80" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;position:relative;display:block;" aria-label="Stylised map of the United Arab Emirates">
+              <!-- UAE outline (stylised) -->
+              <path
+                d="M 8,38 L 14,28 L 22,22 L 30,18 L 38,16 L 48,16 L 56,12 L 64,8 L 70,9 L 76,14 L 82,20 L 86,28 L 88,36 L 86,42 L 80,46 L 70,52 L 58,58 L 50,62 L 42,66 L 32,68 L 22,66 L 14,62 L 9,54 L 8,46 Z"
+                fill="#fff"
+                stroke="var(--ab-navy)"
+                stroke-width="0.6"
+                opacity="0.95"
+              />
+              <!-- Inner detail lines for visual interest -->
+              <path
+                d="M 30,18 L 32,30 L 40,40 L 52,46 L 64,48 L 76,46"
+                fill="none"
+                stroke="var(--ab-navy)"
+                stroke-width="0.15"
+                stroke-dasharray="0.6 0.8"
+                opacity="0.4"
+              />
+
+              <!-- Pins -->
+              {emirates.map((e) => {
+                const isHQ = e.tier === 'Head office';
+                const r = isHQ ? 1.6 : e.tier === 'Priority' ? 1.3 : 1.0;
+                const fill = isHQ ? 'var(--ab-red)' : e.tier === 'Priority' ? 'var(--ab-navy)' : 'var(--ab-gold)';
+                return (
+                  <g>
+                    {isHQ && <circle cx={e.x} cy={e.y} r={r + 2} fill="var(--ab-red)" opacity="0.15"></circle>}
+                    <circle cx={e.x} cy={e.y} r={r} fill={fill} stroke="#fff" stroke-width="0.4"></circle>
+                    <text x={e.x + (e.x > 70 ? -2 : 2)} y={e.y + (e.y > 60 ? 3 : -2)} text-anchor={e.x > 70 ? 'end' : 'start'} font-family="var(--ab-font-display)" font-size="2.4" fill="var(--ab-navy)" font-weight="600">{e.name}</text>
+                    {isHQ && <text x={e.x + 2} y={e.y + 2.5} font-family="var(--ab-font-mono)" font-size="1.4" letter-spacing="0.05em" fill="var(--ab-red)" font-weight="600">HQ</text>}
+                  </g>
+                );
+              })}
+
+              <!-- North arrow -->
+              <g transform="translate(8,8)" opacity="0.55">
+                <circle r="2" fill="none" stroke="var(--ab-navy)" stroke-width="0.2"></circle>
+                <path d="M 0,-1.6 L 0.6,0 L 0,-0.6 L -0.6,0 Z" fill="var(--ab-navy)"></path>
+                <text y="3.6" text-anchor="middle" font-family="var(--ab-font-mono)" font-size="1.2" fill="var(--ab-navy)" letter-spacing="0.08em">N</text>
+              </g>
+            </svg>
+
+            <!-- Legend -->
+            <div style="position:absolute;bottom:24px;left:24px;background:#fff;border:1px solid var(--ab-line-warm);border-radius:6px;padding:12px 14px;font-size:11px;display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;color:var(--ab-ink);"><span style="width:8px;height:8px;border-radius:50%;background:var(--ab-red);"></span>Head office</div>
+              <div style="display:flex;align-items:center;gap:8px;color:var(--ab-ink);"><span style="width:8px;height:8px;border-radius:50%;background:var(--ab-navy);"></span>Priority market</div>
+              <div style="display:flex;align-items:center;gap:8px;color:var(--ab-ink);"><span style="width:8px;height:8px;border-radius:50%;background:var(--ab-gold);"></span>Secondary market</div>
+            </div>
+          </div>
+
+          <!-- Emirate list -->
+          <div>
+            <div class="ab-eyebrow-line">By emirate</div>
+            <h2 class="ab-display ab-h2" style="margin-bottom:24px;">Coverage detail</h2>
+            <ul style="list-style:none;padding:0;margin:0;border-top:1px solid var(--ab-line-cool);">
+              {emirates.map((e) => (
+                <li style="padding:18px 0;border-bottom:1px solid var(--ab-line-cool);display:grid;grid-template-columns:1fr auto;gap:16px;align-items:baseline;">
+                  <div>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <span style={`width:8px;height:8px;border-radius:50%;background:${e.tier === 'Head office' ? 'var(--ab-red)' : e.tier === 'Priority' ? 'var(--ab-navy)' : 'var(--ab-gold)'};`}></span>
+                      <span style="font-family:var(--ab-font-display);font-size:18px;font-weight:600;color:var(--ab-navy);letter-spacing:-0.005em;">{e.name}</span>
+                      <span style="font-family:var(--ab-font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-steel);">{e.tier}</span>
+                    </div>
+                    <div style="font-size:13px;color:var(--ab-ink-soft);margin-top:6px;line-height:1.5;">{e.note}</div>
+                  </div>
+                  <div style="font-family:var(--ab-font-mono);font-size:13px;color:var(--ab-red);font-weight:500;text-align:right;">{e.clients}</div>
+                </li>
+              ))}
+            </ul>
+            <div style="margin-top:18px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ab-steel);">
+              <Icon name="pin" size={14} />
+              <span>Engagement counts approximate, since 2013</span>
+            </div>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Beyond UAE -->
+  <section class="ab-section ab-bg-sand">
+    <div class="ab-container">
+      <Reveal>
+        <SectionHead
+          eyebrow="Beyond the UAE"
+          title="Selected GCC engagements supported."
+          lead="The default practice is UAE-only. Engagements in other GCC markets are supported case by case, usually as a continuation of an existing UAE client or where the standard requires regional consistency."
+        />
+      </Reveal>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;" class="gcc-grid">
+        {beyond.map((b, i) => (
+          <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+            <div class="ab-spot" style="padding:24px;">
+              <span class="ab-disk sm gold"><Icon name="globe" size={14} /></span>
+              <h3 style="font-family:var(--ab-font-display);font-size:18px;font-weight:600;color:var(--ab-navy);margin:14px 0 8px;letter-spacing:-0.005em;">{b.name}</h3>
+              <p style="font-size:13px;color:var(--ab-ink-soft);line-height:1.55;margin:0;">{b.note}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+      <style>
+        @media (max-width: 720px) { .gcc-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+      </style>
+    </div>
+  </section>
+
+  <!-- HQ card -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;" class="hq-grid">
+        <Reveal>
+          <span class="ab-eyebrow-line">Visit the office</span>
+          <h2 class="ab-display ab-h2" style="text-wrap:balance;max-width:18ch;">{company.address.city} head office.</h2>
+          <p style="font-size:17px;color:var(--ab-ink-soft);line-height:1.6;margin:24px 0 0;max-width:54ch;">
+            The Al Batra office sits at {company.address.line1}, opposite {company.address.line2}, in central {company.address.city}. Visitor parking is available in the mall; nearest landmark is Rolla Square Park.
+          </p>
+          <ul style="list-style:none;padding:0;margin:32px 0 0;display:flex;flex-direction:column;gap:14px;font-size:14px;color:var(--ab-ink-soft);">
+            <li style="display:flex;align-items:flex-start;gap:14px;"><Icon name="pin" size={18} /><span>{company.address.line1}, {company.address.line2}, {company.address.city}, {company.address.country}</span></li>
+            <li style="display:flex;align-items:center;gap:14px;"><Icon name="clock" size={18} /><span>{company.openingHours}</span></li>
+            {company.phones.map((p) => (
+              <li style="display:flex;align-items:center;gap:14px;"><Icon name="phone" size={18} /><a href={`tel:${p.tel}`} style="color:var(--ab-navy);font-weight:500;">{p.label}: {p.display}</a></li>
+            ))}
+            <li style="display:flex;align-items:center;gap:14px;"><Icon name="mail" size={18} /><a href={`mailto:${company.email}`} style="color:var(--ab-navy);font-weight:500;">{company.email}</a></li>
+          </ul>
+        </Reveal>
+        <Reveal delay={1}>
+          <div class="ab-spot" style="padding:0;overflow:hidden;">
+            <iframe
+              title="Map of Al Batra HQ in Sharjah"
+              src={`https://www.google.com/maps?q=${company.geo.latitude},${company.geo.longitude}&z=15&output=embed`}
+              width="100%"
+              height="420"
+              style="border:0;display:block;"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </Reveal>
+      </div>
+      <style>
+        @media (max-width: 720px) { .hq-grid { grid-template-columns: 1fr !important; gap: 32px !important; } }
+      </style>
+    </div>
+  </section>
+
+  <LeadCTA />
+</BaseLayout>

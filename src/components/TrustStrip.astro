@@ -1,0 +1,33 @@
+---
+import { standards } from '../data/standards';
+import Reveal from './Reveal.astro';
+
+/**
+ * Trust strip — running marquee of standards we cover + key trust ribbons.
+ * Editorial "logo wall" without logos, using the standards roster itself.
+ */
+const items = standards.slice(0, 18);
+const doubled = [...items, ...items];
+---
+<section class="ab-section-sm" aria-label="Standards we cover" style="background:#fff;border-top:1px solid var(--ab-line-warm);border-bottom:1px solid var(--ab-line-warm);padding:48px 0;">
+  <div class="ab-container">
+    <Reveal>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:28px;">
+        <span class="ab-tag muted">In our practice</span>
+        <span style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-steel);">27 standards · 7 emirates · 12+ industries</span>
+      </div>
+    </Reveal>
+    <Reveal delay={1}>
+      <div class="ab-marquee" aria-hidden="true">
+        <div class="ab-marquee__track">
+          {doubled.map((s) => (
+            <span class="ab-marquee__item">
+              <span class="code">{s.code}</span>
+              <span>{s.title}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </Reveal>
+  </div>
+</section>

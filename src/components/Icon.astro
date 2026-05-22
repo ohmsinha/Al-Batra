@@ -1,0 +1,75 @@
+---
+/**
+ * SVG icon library — minimal, line-based icons sized via font-size / `size` prop.
+ * All icons inherit `currentColor`. Keep set small + cohesive.
+ */
+type IconName =
+  | 'arrow-right' | 'arrow-up-right' | 'check' | 'shield' | 'document'
+  | 'gauge' | 'clipboard' | 'handshake' | 'spark' | 'globe' | 'lock'
+  | 'leaf' | 'beaker' | 'chip' | 'building' | 'truck' | 'utensils'
+  | 'heart-pulse' | 'wrench' | 'pin' | 'phone' | 'mail' | 'clock'
+  | 'linkedin' | 'plus' | 'minus' | 'menu' | 'close' | 'compass'
+  | 'sparkles' | 'badge-check' | 'list-check' | 'route' | 'flag'
+  | 'send' | 'chart' | 'users' | 'briefcase' | 'scale' | 'recycle';
+
+type Props = { name: IconName; size?: number; class?: string; stroke?: number };
+const { name, size = 20, class: className = '', stroke = 1.5 } = Astro.props as Props;
+
+const paths: Record<IconName, string> = {
+  'arrow-right': '<path d="M5 12h14M13 6l6 6-6 6" />',
+  'arrow-up-right': '<path d="M7 17 17 7M9 7h8v8" />',
+  'check': '<path d="M5 12.5l5 5L20 7" />',
+  'shield': '<path d="M12 3l8 3v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-3Z" />',
+  'document': '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" /><path d="M14 3v5h5" /><path d="M9 13h6M9 17h6" />',
+  'gauge': '<path d="M12 21a9 9 0 1 1 9-9" /><path d="M12 12l5-3" />',
+  'clipboard': '<rect x="6" y="4" width="12" height="17" rx="2" /><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1" /><path d="M9 11h6M9 15h4" />',
+  'handshake': '<path d="m11 17 2 2a2.83 2.83 0 0 0 4-4l-7-7a3 3 0 0 0-3-1l-3 3 6 6" /><path d="m21 17-3-3 3-3" /><path d="m3 7 3 3-3 3" />',
+  'spark': '<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" />',
+  'globe': '<circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />',
+  'lock': '<rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" />',
+  'leaf': '<path d="M21 3c-7 0-13 5-13 12 0 3 1 5 3 6 7 0 12-5 12-13 0-2 0-4-2-5Z" /><path d="M5 21c2-6 6-9 11-12" />',
+  'beaker': '<path d="M9 3h6M10 3v6L5 19a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3L14 9V3" /><path d="M7 14h10" />',
+  'chip': '<rect x="6" y="6" width="12" height="12" rx="2" /><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3" />',
+  'building': '<rect x="4" y="3" width="16" height="18" rx="1" /><path d="M9 8h2M13 8h2M9 12h2M13 12h2M9 16h6" />',
+  'truck': '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" /><circle cx="7" cy="18" r="2" /><circle cx="17" cy="18" r="2" />',
+  'utensils': '<path d="M6 3v8a2 2 0 0 0 2 2v8M10 3v8a2 2 0 0 1-2 2M18 3l-2 6c0 2 2 3 2 3v9" />',
+  'heart-pulse': '<path d="M3 12h3l2-4 4 8 2-4h7" /><path d="M21 12c0 5-9 9-9 9s-9-4-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3Z" />',
+  'wrench': '<path d="M14 6a4 4 0 1 0 4 4l4 4-3 3-4-4a4 4 0 0 1-5-5L7 4 4 7l4 4Z" />',
+  'pin': '<path d="M12 22s7-6 7-12a7 7 0 0 0-14 0c0 6 7 12 7 12Z" /><circle cx="12" cy="10" r="2.5" />',
+  'phone': '<path d="M5 4h4l2 5-2 1a11 11 0 0 0 5 5l1-2 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />',
+  'mail': '<rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" />',
+  'clock': '<circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />',
+  'linkedin': '<rect x="3" y="3" width="18" height="18" rx="2" /><path d="M8 10v8M8 7v.01M12 18v-5a3 3 0 0 1 6 0v5M12 13v5" />',
+  'plus': '<path d="M12 5v14M5 12h14" />',
+  'minus': '<path d="M5 12h14" />',
+  'menu': '<path d="M4 7h16M4 12h16M4 17h16" />',
+  'close': '<path d="M6 6l12 12M18 6 6 18" />',
+  'compass': '<circle cx="12" cy="12" r="9" /><path d="m9 15 2-6 6-2-2 6Z" />',
+  'sparkles': '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2" />',
+  'badge-check': '<path d="m12 2 2.4 1.8 3 .2.2 3L19 9.4l.2 3-1.5 2.6 1.5 2.6-.2 3-3 .2L12 22l-2.4-1.8-3-.2-.2-3L5 14.6l-.2-3 1.5-2.6L4.8 6.4l.2-3 3-.2Z" /><path d="m9 12 2 2 4-4" />',
+  'list-check': '<path d="M3 6h2M3 12h2M3 18h2M9 6h12M9 12h12M9 18h8" /><path d="m18 17 1.5 1.5L22 16" />',
+  'route': '<circle cx="6" cy="18" r="2.5" /><circle cx="18" cy="6" r="2.5" /><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5" />',
+  'flag': '<path d="M4 22V4M4 14V4h12l-2 4 2 4H4" />',
+  'send': '<path d="M22 2 11 13M22 2l-7 20-4-9-9-4Z" />',
+  'chart': '<path d="M4 4v16h16M8 16V11M12 16V8M16 16v-3" />',
+  'users': '<circle cx="9" cy="9" r="3.5" /><path d="M3 21a6 6 0 0 1 12 0" /><path d="M16 4a3.5 3.5 0 0 1 0 7M21 21a6 6 0 0 0-5-6" />',
+  'briefcase': '<rect x="3" y="7" width="18" height="13" rx="2" /><path d="M9 7V4h6v3M3 13h18" />',
+  'scale': '<path d="M12 3v18M5 7l-3 7a4 4 0 0 0 6 0Zm0 0 7-2 7 2M19 7l3 7a4 4 0 0 1-6 0Z" />',
+  'recycle': '<path d="M7 19h10a2 2 0 0 0 2-3l-2-3" /><path d="m12 5-3 5-5-2 4-5ZM7 19l-3-5 5-2M12 5l5 2-3 5" />',
+};
+
+const d = paths[name] ?? paths['arrow-right'];
+---
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={stroke}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  aria-hidden="true"
+  set:html={d}
+/>

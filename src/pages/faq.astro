@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import FAQ from '../components/FAQ.astro';
+import LeadCTA from '../components/LeadCTA.astro';
+import Reveal from '../components/Reveal.astro';
+import Icon from '../components/Icon.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbJsonLd, faqJsonLd } from '../utils/seo';
+
+const faqEntries = (await getCollection('faq'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => e.data);
+
+const grouped: Record<string, typeof faqEntries> = {};
+for (const e of faqEntries) {
+  if (!grouped[e.category]) grouped[e.category] = [];
+  grouped[e.category].push(e);
+}
+
+const jsonLd = [
+  breadcrumbJsonLd([{ name: 'Home', href: '/' }, { name: 'FAQ', href: '/faq' }]),
+  faqJsonLd(faqEntries.map((e) => ({ question: e.question, answer: e.answer }))),
+];
+
+const categories = Object.keys(grouped);
+---
+<BaseLayout
+  title="FAQ — engagement, timelines and certification"
+  description="Frequently asked questions on Al Batra's ISO certification engagements — timelines, bilingual documentation, fixed-fee scope and UAE coverage."
+  jsonLd={jsonLd}
+>
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.6;mask-image:radial-gradient(ellipse at 90% 80%, transparent 0%, #000 65%);-webkit-mask-image:radial-gradient(ellipse at 90% 80%, transparent 0%, #000 65%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'FAQ' }]} />
+      <Reveal>
+        <div style="margin-top:32px;display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:end;">
+          <div>
+            <span class="ab-eyebrow-line">Frequently asked</span>
+            <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">
+              Engagement, timelines and <span class="accent">what to expect</span>.
+            </h1>
+            <p class="ab-lead" style="margin-top:24px;">
+              The questions we hear most often from quality and operations teams considering an ISO engagement. For a question specific to your organisation, please contact the consulting team directly.
+            </p>
+          </div>
+          <div>
+            <div style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-steel);margin-bottom:12px;">Browse by topic</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              {categories.map((c) => <a href={`#${c.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} class="ab-pill">{c}</a>)}
+            </div>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  {Object.entries(grouped).map(([category, items], index) => (
+    <div id={category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}>
+      <FAQ
+        items={items}
+        heading={category}
+        eyebrow={`Topic · ${category.toLowerCase()}`}
+        background={index % 2 === 0 ? 'paper' : 'paper-dim'}
+      />
+    </div>
+  ))}
+
+  <LeadCTA />
+</BaseLayout>

@@ -1,0 +1,113 @@
+---
+import { standards } from '../data/standards';
+import Reveal from './Reveal.astro';
+import Icon from './Icon.astro';
+
+type Props = {
+  heading?: string;
+  eyebrow?: string;
+  body?: string;
+  ctaLabel?: string;
+  variant?: 'block' | 'plain';
+};
+
+const {
+  heading = 'Start with a written gap analysis and a fixed-fee plan.',
+  eyebrow = 'Request a proposal',
+  body = 'Tell us about your organisation and the standards you intend to certify against. Our consulting team will respond with a written gap analysis and a fixed-fee implementation proposal — usually within one working day.',
+  ctaLabel = 'Request gap analysis',
+  variant = 'block',
+} = Astro.props as Props;
+
+const dropdownItems = standards
+  .filter((s) => s.slug)
+  .map((s) => ({ value: s.slug, label: `${s.code} — ${s.title}` }));
+---
+{variant === 'block' ? (
+  <section class="ab-section" aria-labelledby="lead-cta">
+    <div class="ab-container">
+      <Reveal>
+        <div class="ab-lead-cta ab-corners">
+          <div>
+            <span class="ab-eyebrow-line" style="color:var(--ab-gold);">{eyebrow}</span>
+            <h2 id="lead-cta" class="ab-display ab-h2" style="color:#fff;">{heading}</h2>
+            <p>{body}</p>
+            <ul style="list-style:none;padding:0;margin:32px 0 0;display:flex;flex-direction:column;gap:14px;">
+              <li style="display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.85);font-size:14px;">
+                <Icon name="check" size={16} stroke={2} class="" /> Written gap analysis with clause-by-clause findings
+              </li>
+              <li style="display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.85);font-size:14px;">
+                <Icon name="check" size={16} stroke={2} class="" /> Fixed-fee proposal — no open-ended retainer
+              </li>
+              <li style="display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.85);font-size:14px;">
+                <Icon name="check" size={16} stroke={2} class="" /> Response from a consultant, not a sales channel
+              </li>
+            </ul>
+          </div>
+          <form class="ab-form" action="/api/contact" method="post" novalidate>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div>
+                <label class="ab-label" style="color:#fff;">Name</label>
+                <input class="ab-input" name="name" placeholder="Full name" required autocomplete="name" />
+              </div>
+              <div>
+                <label class="ab-label" style="color:#fff;">Email</label>
+                <input class="ab-input" name="email" type="email" placeholder="Work email" required autocomplete="email" />
+              </div>
+            </div>
+            <div>
+              <label class="ab-label" style="color:#fff;">Company</label>
+              <input class="ab-input" name="company" placeholder="Organisation" required autocomplete="organization" />
+            </div>
+            <div>
+              <label class="ab-label" style="color:#fff;">Standard of interest</label>
+              <select class="ab-input" name="standard" required>
+                <option value="">Select a standard</option>
+                {dropdownItems.map((opt) => (
+                  <option value={opt.value}>{opt.label}</option>
+                ))}
+                <option value="other">Other / Multiple standards</option>
+              </select>
+            </div>
+            <button type="submit" class="ab-btn ab-btn-accent" style="justify-content:center;padding:14px 22px;margin-top:6px;">
+              {ctaLabel} <Icon name="arrow-right" size={16} />
+            </button>
+            <p class="ab-meta" style="color:rgba(255,255,255,.6);font-size:12px;margin:4px 0 0;line-height:1.5;">
+              By submitting, you agree to be contacted by Al Batra Management Consultancy regarding your enquiry. We respond within one working day.
+            </p>
+          </form>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+) : (
+  <section class="ab-section" aria-labelledby="lead-cta-plain">
+    <div class="ab-container">
+      <Reveal>
+        <span class="ab-eyebrow-line">{eyebrow}</span>
+        <h2 id="lead-cta-plain" class="ab-display ab-h2" style="max-width:760px;">{heading}</h2>
+        <p class="ab-lead" style="margin-top:18px;">{body}</p>
+      </Reveal>
+      <Reveal delay={1}>
+        <form class="ab-form" style="max-width:560px;margin-top:32px;" action="/api/contact" method="post" novalidate>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <input class="ab-input" name="name" placeholder="Full name" required autocomplete="name" />
+            <input class="ab-input" name="email" type="email" placeholder="Work email" required autocomplete="email" />
+          </div>
+          <input class="ab-input" name="company" placeholder="Company" required autocomplete="organization" />
+          <select class="ab-input" name="standard" required>
+            <option value="">Standard of interest</option>
+            {dropdownItems.map((opt) => (
+              <option value={opt.value}>{opt.label}</option>
+            ))}
+            <option value="other">Other / Multiple standards</option>
+          </select>
+          <textarea class="ab-textarea" name="message" placeholder="Tell us about your organisation and current readiness."></textarea>
+          <button type="submit" class="ab-btn ab-btn-primary" style="justify-content:center;padding:14px 22px;">
+            {ctaLabel} <Icon name="arrow-right" size={16} />
+          </button>
+        </form>
+      </Reveal>
+    </div>
+  </section>
+)}

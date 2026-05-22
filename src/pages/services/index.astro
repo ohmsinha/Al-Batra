@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import LeadCTA from '../../components/LeadCTA.astro';
+import Reveal from '../../components/Reveal.astro';
+import Icon from '../../components/Icon.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { standards, standardFamilies } from '../../data/standards';
+import { breadcrumbJsonLd } from '../../utils/seo';
+
+const grouped = standardFamilies.map((family) => ({
+  ...family,
+  items: standards.filter((s) => s.family === family.id),
+}));
+
+const familyIcons: Record<string, string> = {
+  QMS: 'gauge',
+  EMS: 'leaf',
+  OHSMS: 'shield',
+  FSMS: 'utensils',
+  ISMS: 'lock',
+  IMS: 'route',
+  Sector: 'building',
+};
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: 'Home', href: '/' },
+    { name: 'Services', href: '/services' },
+  ]),
+];
+---
+<BaseLayout
+  title="ISO Standards & Services"
+  description="The full roster of ISO standards Al Batra implements across the UAE — quality, environment, occupational health and safety, food safety, information security, energy, business continuity and sector-specific frameworks."
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.7;mask-image:radial-gradient(ellipse at 80% 100%, transparent 0%, #000 60%);-webkit-mask-image:radial-gradient(ellipse at 80% 100%, transparent 0%, #000 60%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Services' }]} />
+      <div style="margin-top:32px;display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:end;">
+        <Reveal>
+          <span class="ab-eyebrow-line">Consulting services</span>
+          <h1 class="ab-display ab-h1-page" style="max-width:18ch;text-wrap:balance;">
+            Twenty-seven standards.<br />
+            <span class="accent">One implementation</span> consultancy.
+          </h1>
+          <p class="ab-lead" style="margin-top:24px;">
+            We implement management systems against the ISO standards UAE organisations actually certify against — grouped below by family. Default engagement: fixed fee, weekly on-site, 8–12 weeks. Variations are flagged on the individual page.
+          </p>
+          <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="/contact" class="ab-btn ab-btn-primary">Request a proposal <Icon name="arrow-right" size={14} /></a>
+            <a href="#families" class="ab-btn ab-btn-secondary">Jump to a family</a>
+          </div>
+        </Reveal>
+        <Reveal delay={2}>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--ab-line-warm);border-radius:var(--ab-r-card);background:#fff;overflow:hidden;">
+            <div style="padding:24px;border-right:1px solid var(--ab-line-warm);border-bottom:1px solid var(--ab-line-warm);">
+              <div class="ab-tag muted">Active practice</div>
+              <div style="font-family:var(--ab-font-display);font-size:38px;font-weight:600;color:var(--ab-navy);letter-spacing:-0.02em;line-height:1;margin-top:10px;">27</div>
+              <div style="font-size:12px;color:var(--ab-steel);margin-top:6px;line-height:1.5;">ISO standards</div>
+            </div>
+            <div style="padding:24px;border-bottom:1px solid var(--ab-line-warm);">
+              <div class="ab-tag muted">Families</div>
+              <div style="font-family:var(--ab-font-display);font-size:38px;font-weight:600;color:var(--ab-navy);letter-spacing:-0.02em;line-height:1;margin-top:10px;">7</div>
+              <div style="font-size:12px;color:var(--ab-steel);margin-top:6px;line-height:1.5;">Standard families</div>
+            </div>
+            <div style="padding:24px;border-right:1px solid var(--ab-line-warm);">
+              <div class="ab-tag muted">Languages</div>
+              <div style="font-family:var(--ab-font-display);font-size:22px;font-weight:600;color:var(--ab-navy);letter-spacing:-0.01em;line-height:1.1;margin-top:10px;">EN · AR</div>
+              <div style="font-size:12px;color:var(--ab-steel);margin-top:6px;line-height:1.5;">Bilingual docs</div>
+            </div>
+            <div style="padding:24px;">
+              <div class="ab-tag muted">Timeline</div>
+              <div style="font-family:var(--ab-font-display);font-size:22px;font-weight:600;color:var(--ab-navy);letter-spacing:-0.01em;line-height:1.1;margin-top:10px;">8–12 wks</div>
+              <div style="font-size:12px;color:var(--ab-steel);margin-top:6px;line-height:1.5;">Typical engagement</div>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- Family panels -->
+  <section class="ab-section" id="families">
+    <div class="ab-container">
+      {grouped.map((family, fi) => (
+        <Reveal>
+          <div class="ab-family" id={family.id.toLowerCase()}>
+            <div class="ab-family__intro">
+              <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;">
+                <span class="ab-disk"><Icon name={familyIcons[family.id] as any} size={22} /></span>
+                <span class="ab-tag muted">Family {String(fi + 1).padStart(2, '0')}</span>
+              </div>
+              <h3>{family.title}</h3>
+              <p>{family.desc}</p>
+              <div class="count">{family.items.length} {family.items.length === 1 ? 'standard' : 'standards'}</div>
+            </div>
+            <div class="ab-family__list">
+              {family.items.map((s) => (
+                s.slug ? (
+                  <a class="ab-st" href={`/services/${s.slug}`}>
+                    <div class="ab-st__code">{s.code}</div>
+                    <div class="ab-st__title">{s.title}</div>
+                    <div class="ab-st__arrow">Read implementation guide →</div>
+                  </a>
+                ) : (
+                  <a class="ab-st unlinked" href="/contact" title="Request scope confirmation">
+                    <div class="ab-st__code">{s.code}</div>
+                    <div class="ab-st__title">{s.title}</div>
+                    <div class="ab-st__arrow">Request scope →</div>
+                  </a>
+                )
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      ))}
+    </div>
+  </section>
+
+  <!-- Methodology summary -->
+  <section class="ab-section ab-bg-sand">
+    <div class="ab-container">
+      <Reveal>
+        <SectionHead
+          eyebrow="Default engagement"
+          title="Same five phases. Different depth, different artefacts."
+          lead="Every standard sits inside the same delivery model: gap analysis, documentation, implementation, internal audit, certification body support. The difference is what gets produced inside each phase."
+          link={{ href: '/methodology', label: 'See the full methodology' }}
+        />
+      </Reveal>
+
+      <Reveal delay={1}>
+        <div class="ab-pull" style="margin:0;">
+          <p>The standard tells you what to do. Implementation is what makes the difference between a binder on a shelf and an organisation that actually operates the way it documents.</p>
+          <cite>— from the Al Batra consulting handbook</cite>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <LeadCTA
+    heading="Standard not in the roster? Send us a brief."
+    body="The list above is the working roster. If the standard you intend to certify against is not here, most ISO frameworks share an underlying structure — our consulting team can confirm scope and feasibility within a working week."
+    ctaLabel="Ask the consulting team"
+  />
+</BaseLayout>

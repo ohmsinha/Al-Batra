@@ -1,0 +1,45 @@
+---
+import SectionHead from './SectionHead.astro';
+import Reveal from './Reveal.astro';
+import Icon from './Icon.astro';
+
+type Props = { locale?: 'en' | 'ar' };
+const { locale = 'en' } = Astro.props as Props;
+const prefix = locale === 'ar' ? '/ar' : '';
+
+const items: Array<{ slug: string; t: string; d: string; codes: string; icon: string }> = [
+  { slug: 'hospitality',           t: 'Hospitality & F&B',     d: 'Hotels, central kitchens, restaurant groups and catering operators.', codes: 'ISO 22000 · 9001 · 14001', icon: 'utensils' },
+  { slug: 'manufacturing',         t: 'Manufacturing',          d: 'Process plants, packaging lines and industrial fabricators.',         codes: 'ISO 9001 · 14001 · 45001', icon: 'wrench' },
+  { slug: 'logistics',             t: 'Logistics & Trade',      d: 'Freight forwarders, 3PLs and free-zone operators.',                   codes: 'ISO 9001 · 28000',          icon: 'truck' },
+  { slug: 'healthcare',            t: 'Healthcare & Labs',      d: 'Clinics, diagnostic laboratories and medical device manufacturers.', codes: 'ISO 13485 · 15189',         icon: 'heart-pulse' },
+  { slug: 'energy',                t: 'Energy & Utilities',     d: 'Oil & gas, renewables, water and waste operators.',                   codes: 'ISO 50001 · 14001',         icon: 'spark' },
+  { slug: 'professional-services', t: 'Professional Services',  d: 'Consultancies, financial services and IT operators.',                 codes: 'ISO 9001 · 27001',          icon: 'briefcase' },
+];
+---
+<section class="ab-section ab-bg-sand" aria-labelledby="industries">
+  <div class="ab-container">
+    <Reveal>
+      <SectionHead
+        eyebrow="Industries served"
+        title="Sector-specific practice, not a generic template."
+        lead="Where the standard meets your operation matters more than the clause text. Our consultants come from the sectors they advise."
+        link={{ href: `${prefix}/industries`, label: 'All industries' }}
+      />
+    </Reveal>
+    <div class="ab-industries-grid">
+      {items.map((it, i) => (
+        <Reveal delay={Math.min(5, (i % 3) + 1) as 1|2|3|4|5}>
+          <a class="ab-industry-card" href={`${prefix}/industries/${it.slug}`}>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;">
+              <span class="ab-disk gold"><Icon name={it.icon as any} size={22} /></span>
+              <Icon name="arrow-up-right" size={18} class="" />
+            </div>
+            <div class="ab-industry-t">{it.t}</div>
+            <div class="ab-industry-d">{it.d}</div>
+            <div class="ab-industry-codes">{it.codes}</div>
+          </a>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import Reveal from '../components/Reveal.astro';
+---
+<BaseLayout
+  title="Page not found"
+  description="The page you requested could not be found."
+  noindex
+>
+  <section style="min-height:75vh;display:flex;align-items:center;background:var(--ab-sand);position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.6;mask-image:radial-gradient(ellipse at 50% 50%, transparent 0%, #000 75%);-webkit-mask-image:radial-gradient(ellipse at 50% 50%, transparent 0%, #000 75%);"></div>
+    <div class="ab-container" style="position:relative;text-align:center;max-width:680px;padding:96px 32px;">
+      <Reveal>
+        <div style="font-family:var(--ab-font-display);font-size:clamp(140px,18vw,220px);font-weight:600;color:var(--ab-navy);letter-spacing:-0.05em;line-height:1;margin-bottom:0;">
+          4<span class="accent" style="color:var(--ab-red);font-style:italic;">0</span>4
+        </div>
+        <div style="width:48px;height:2px;background:var(--ab-red);margin:24px auto 24px;"></div>
+        <h1 class="ab-display ab-h2" style="text-wrap:balance;">This page is no longer at this address.</h1>
+        <p class="ab-lead" style="margin:20px auto 0;">
+          The link you followed may be out of date, or the page may have moved. Try one of the routes below, or contact our consulting team directly.
+        </p>
+        <div style="display:flex;gap:12px;margin-top:36px;justify-content:center;flex-wrap:wrap;">
+          <a href="/" class="ab-btn ab-btn-primary">Back to homepage <Icon name="arrow-right" size={14} /></a>
+          <a href="/services" class="ab-btn ab-btn-secondary">See services</a>
+          <a href="/contact" class="ab-btn ab-btn-secondary">Contact us</a>
+        </div>
+      </Reveal>
+
+      <Reveal delay={2}>
+        <div style="margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:left;" class="four-grid">
+          <a href="/methodology" class="ab-spot" style="padding:20px;text-decoration:none;color:inherit;">
+            <span class="ab-disk sm gold"><Icon name="route" size={14} /></span>
+            <h3 style="font-family:var(--ab-font-display);font-size:15px;font-weight:600;color:var(--ab-navy);margin:14px 0 4px;letter-spacing:-0.005em;">Methodology</h3>
+            <p style="font-size:13px;color:var(--ab-steel);margin:0;line-height:1.5;">How an Al Batra engagement runs.</p>
+          </a>
+          <a href="/case-studies" class="ab-spot" style="padding:20px;text-decoration:none;color:inherit;">
+            <span class="ab-disk sm gold"><Icon name="briefcase" size={14} /></span>
+            <h3 style="font-family:var(--ab-font-display);font-size:15px;font-weight:600;color:var(--ab-navy);margin:14px 0 4px;letter-spacing:-0.005em;">Case studies</h3>
+            <p style="font-size:13px;color:var(--ab-steel);margin:0;line-height:1.5;">Selected UAE engagements from the practice.</p>
+          </a>
+          <a href="/insights" class="ab-spot" style="padding:20px;text-decoration:none;color:inherit;">
+            <span class="ab-disk sm gold"><Icon name="document" size={14} /></span>
+            <h3 style="font-family:var(--ab-font-display);font-size:15px;font-weight:600;color:var(--ab-navy);margin:14px 0 4px;letter-spacing:-0.005em;">Insights</h3>
+            <p style="font-size:13px;color:var(--ab-steel);margin:0;line-height:1.5;">Long-form notes from the consultancy floor.</p>
+          </a>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+  <style>
+    @media (max-width: 720px) { .four-grid { grid-template-columns: 1fr !important; } }
+  </style>
+</BaseLayout>

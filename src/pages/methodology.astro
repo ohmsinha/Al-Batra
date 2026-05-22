@@ -1,0 +1,239 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import LeadCTA from '../components/LeadCTA.astro';
+import Reveal from '../components/Reveal.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import { breadcrumbJsonLd } from '../utils/seo';
+
+const jsonLd = [breadcrumbJsonLd([
+  { name: 'Home', href: '/' },
+  { name: 'Methodology', href: '/methodology' },
+])];
+
+const phases = [
+  {
+    n: '01',
+    t: 'Gap analysis',
+    weeks: 'Weeks 1–2',
+    summary: 'A clause-by-clause on-site audit of your operation against the standard, delivered as a written report you can act on.',
+    bullets: [
+      'Site walk-through and process mapping with your operational leads',
+      'Clause-by-clause assessment against the ISO standard',
+      'Findings logged with the responsible owner, action required and target close-out date',
+      'Written report and indicative implementation plan',
+    ],
+    artefact: 'Gap-analysis report',
+    artefactDesc: 'PDF + editable Word; clause-by-clause findings, ownership and close-out targets.',
+  },
+  {
+    n: '02',
+    t: 'Documentation',
+    weeks: 'Weeks 2–6',
+    summary: 'Manuals, procedures and records written for your operation — not lifted from a template — in English and Arabic where the certification body requires it.',
+    bullets: [
+      'Management system manual aligned to the standard’s clause structure',
+      'Procedures, work instructions, forms and records for every applicable clause',
+      'Bilingual (EN + AR) where the controlling-language clause requires it',
+      'Version-controlled, document-coded and ready to operate from',
+    ],
+    artefact: 'Management system pack',
+    artefactDesc: 'Manual, procedures, work instructions, records and forms — version-controlled.',
+  },
+  {
+    n: '03',
+    t: 'Implementation',
+    weeks: 'Weeks 4–10',
+    summary: 'On-site rollout, awareness sessions, training, and the building of a working evidence trail your auditors can follow.',
+    bullets: [
+      'On-site rollout with the operational team — process by process',
+      'Awareness sessions for all staff, in operational language',
+      'Internal-auditor training for nominated staff (typically 2–4 people)',
+      'Evidence-trail builder for records, registers and management review',
+    ],
+    artefact: 'Live evidence trail',
+    artefactDesc: 'Real records produced by your team — not back-dated, not retro-fitted.',
+  },
+  {
+    n: '04',
+    t: 'Internal audit',
+    weeks: 'Weeks 8–11',
+    summary: 'A full internal audit cycle against the standard, with corrective actions tracked through to closure and management review minuted.',
+    bullets: [
+      'Internal audit plan, schedule and audit team selection',
+      'Full audit cycle against the standard with findings logged',
+      'Corrective and preventive actions tracked to closure',
+      'Management review meeting facilitated and minuted',
+    ],
+    artefact: 'Audit + management review pack',
+    artefactDesc: 'Plan, findings, corrective actions, closure evidence, management review minutes.',
+  },
+  {
+    n: '05',
+    t: 'Certification body audit',
+    weeks: 'Weeks 12+',
+    summary: 'We sit with you through Stage 1 and Stage 2, respond to auditor questions, and handle non-conformity closure plus the first surveillance audit.',
+    bullets: [
+      'Stage 1 readiness — documentation review with the certification body',
+      'Stage 2 attendance — on-site, in the audit room, fielding clause questions',
+      'Non-conformity closure with evidence pack returned to the certification body',
+      'First surveillance audit (typically 12 months out) supported as part of the fee',
+    ],
+    artefact: 'Certificate',
+    artefactDesc: 'Issued by your chosen IAF-accredited certification body — we do not issue certificates.',
+  },
+];
+
+const inOutItems = [
+  {
+    head: 'What is included in every engagement',
+    items: [
+      'Gap analysis, documentation, implementation, internal audit and Stage 1/2 support',
+      'One lead consultant assigned for the full engagement',
+      'Weekly on-site presence at your operating site',
+      'Bilingual (EN + AR) documentation where required',
+      'Internal-auditor training for 2–4 nominated staff',
+      'First surveillance audit support',
+    ],
+  },
+  {
+    head: 'What is not in scope by default',
+    items: [
+      'The certification body audit fee — you contract directly with the certifier',
+      'Lab testing, calibration or accredited measurement services',
+      'Translation of operational records beyond the documented system',
+      'Ongoing operational ownership of the management system post Stage 2',
+      'Hardware purchases (PPE, sensors, signage, etc.)',
+      'Travel outside the UAE',
+    ],
+  },
+];
+---
+<BaseLayout
+  title="Methodology · How Al Batra implements ISO certification"
+  description="A five-phase implementation methodology — gap analysis, documentation, implementation, internal audit, certification — delivered on a fixed fee with weekly on-site presence across the UAE."
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.6;mask-image:radial-gradient(ellipse at 90% 100%, transparent 0%, #000 60%);-webkit-mask-image:radial-gradient(ellipse at 90% 100%, transparent 0%, #000 60%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Methodology' }]} />
+      <div style="margin-top:32px;display:grid;grid-template-columns:1.4fr 1fr;gap:80px;align-items:end;">
+        <Reveal>
+          <span class="ab-eyebrow-line">Methodology</span>
+          <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">
+            Five phases. <span class="accent">Fixed fee.</span><br />
+            No open-ended retainer.
+          </h1>
+          <p class="ab-lead" style="margin-top:24px;">
+            The same engagement model runs through every standard. The depth changes with the standard, sector and operation — the structure does not. Below is the way we work, in detail.
+          </p>
+          <div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;">
+            <a href="/contact" class="ab-btn ab-btn-primary">Start with a gap analysis <Icon name="arrow-right" size={14} /></a>
+            <a href="/pricing" class="ab-btn ab-btn-secondary">See pricing & inclusions</a>
+          </div>
+        </Reveal>
+        <Reveal delay={2}>
+          <div style="position:relative;">
+            <article class="ab-doc" style="transform:rotate(1deg);">
+              <header class="ab-doc__head">
+                <span class="ab-doc__ref">Engagement plan · template</span>
+                <Icon name="badge-check" size={20} class="" stroke={1.5} />
+              </header>
+              <h3 class="ab-doc__title">Implementation timeline</h3>
+              <dl style="margin:0;">
+                <div class="ab-doc__row"><dt>Phase 1</dt><dd>Gap analysis · 2 wks</dd></div>
+                <div class="ab-doc__row"><dt>Phase 2</dt><dd>Documentation · 4 wks</dd></div>
+                <div class="ab-doc__row"><dt>Phase 3</dt><dd>Implementation · 6 wks</dd></div>
+                <div class="ab-doc__row"><dt>Phase 4</dt><dd>Internal audit · 3 wks</dd></div>
+                <div class="ab-doc__row"><dt>Phase 5</dt><dd>Certification · ongoing</dd></div>
+              </dl>
+            </article>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- Phases (deep) -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <Reveal>
+        <SectionHead
+          eyebrow="The five phases"
+          title="What happens in each phase, and what you receive."
+          lead="Phases overlap by design — documentation begins while gap analysis is closing out, implementation runs alongside documentation. The overlaps are what keep an engagement to 12 weeks."
+        />
+      </Reveal>
+
+      <div style="display:flex;flex-direction:column;gap:0;">
+        {phases.map((p, i) => (
+          <Reveal>
+            <div style="display:grid;grid-template-columns:120px 1fr 360px;gap:48px;padding:48px 0;border-top:1px solid var(--ab-line-cool);align-items:flex-start;" class="phase-row">
+              <div>
+                <div style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-red);">Phase {p.n}</div>
+                <div style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-steel);margin-top:8px;">{p.weeks}</div>
+              </div>
+              <div>
+                <h3 style="font-family:var(--ab-font-display);font-size:32px;font-weight:600;color:var(--ab-navy);margin:0 0 12px;letter-spacing:-0.02em;line-height:1.15;">{p.t}</h3>
+                <p style="font-size:17px;color:var(--ab-ink-soft);line-height:1.6;margin:0 0 18px;max-width:56ch;">{p.summary}</p>
+                <ul class="ab-checklist navy" style="max-width:56ch;">
+                  {p.bullets.map((b) => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="ab-spot" style="padding:24px;background:var(--ab-sand);border-color:var(--ab-line-warm);">
+                <span class="ab-tag">Phase output</span>
+                <h4 style="font-family:var(--ab-font-display);font-size:18px;font-weight:600;color:var(--ab-navy);margin:14px 0 8px;letter-spacing:-0.005em;">{p.artefact}</h4>
+                <p style="font-size:13px;color:var(--ab-steel);line-height:1.55;margin:0;">{p.artefactDesc}</p>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+        <div style="border-top:1px solid var(--ab-line-cool);"></div>
+      </div>
+    </div>
+    <style>
+      @media (max-width: 960px) {
+        .phase-row {
+          grid-template-columns: 1fr !important;
+          gap: 20px !important;
+        }
+      }
+    </style>
+  </section>
+
+  <!-- In/out scope -->
+  <section class="ab-section ab-bg-paper-dim">
+    <div class="ab-container">
+      <Reveal>
+        <SectionHead
+          eyebrow="Scope clarity"
+          title="What is in the fixed fee — and what is not."
+          lead="Below is the default. Variations get flagged on the individual service page and re-confirmed at proposal stage."
+        />
+      </Reveal>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+        {inOutItems.map((col, i) => (
+          <Reveal delay={Math.min(5, ((i % 2) + 1)) as 1|2|3|4|5}>
+            <div class="ab-spot" style="padding:36px;height:100%;">
+              <span class={`ab-disk ${i === 0 ? 'gold' : ''} lg`}><Icon name={i === 0 ? 'check' : 'close'} size={26} /></span>
+              <h3 style="font-family:var(--ab-font-display);font-size:22px;font-weight:600;color:var(--ab-navy);margin:24px 0 18px;letter-spacing:-0.01em;">{col.head}</h3>
+              <ul class={`ab-checklist ${i === 0 ? '' : 'red'}`} style="margin:0;">
+                {col.items.map((it) => <li>{it}</li>)}
+              </ul>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <LeadCTA
+    heading="Start with a fixed-fee gap analysis."
+    body="The gap analysis is the first phase of every engagement, and the only one you commit to before seeing our work. After the written report you can continue with us, or not."
+  />
+</BaseLayout>

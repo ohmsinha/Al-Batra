@@ -1,0 +1,51 @@
+---
+import Reveal from './Reveal.astro';
+import Icon from './Icon.astro';
+
+type Item = { question: string; answer: string };
+type Props = {
+  heading?: string;
+  eyebrow?: string;
+  items: Item[];
+  background?: 'paper' | 'paper-dim' | 'sand';
+};
+
+const {
+  heading = 'Questions we hear from quality and operations teams.',
+  eyebrow = 'Frequently asked',
+  items,
+  background = 'paper-dim',
+} = Astro.props as Props;
+
+const bgClass = background === 'paper-dim' ? 'ab-bg-paper-dim' : background === 'sand' ? 'ab-bg-sand' : '';
+---
+<section class={`ab-section ${bgClass}`} aria-labelledby="faq">
+  <div class="ab-container">
+    <div class="ab-faq-grid">
+      <div class="ab-faq-aside">
+        <Reveal>
+          <span class="ab-eyebrow-line">{eyebrow}</span>
+          <h2 id="faq" class="ab-display ab-h2">{heading}</h2>
+          <p style="margin-top:20px;font-size:15px;color:var(--ab-steel);line-height:1.6;max-width:360px;">
+            For a question specific to your organisation, please contact our consulting team directly. Most enquiries receive a response within one working day.
+          </p>
+          <a href="/contact" class="ab-btn ab-btn-secondary" style="margin-top:24px;">
+            Ask a consultant <Icon name="arrow-right" size={14} />
+          </a>
+        </Reveal>
+      </div>
+      <div>
+        {items.map((it, i) => (
+          <Reveal delay={Math.min(5, (i % 4) + 1) as 1|2|3|4|5}>
+            <details class="ab-faq-item" open={i === 0}>
+              <summary>
+                <span>{it.question}</span>
+              </summary>
+              <p class="ab-faq-item-body">{it.answer}</p>
+            </details>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

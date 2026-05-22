@@ -1,0 +1,44 @@
+---
+/**
+ * Placeholder image slot — editorial. Replace with native <img> / Astro <Image />
+ * once final assets exist. Every slot carries a descriptive `prompt` so the
+ * art-direction is explicit (great for nano-banana / generative pipelines).
+ *
+ * variants:   navy (default, dark gradient + blueprint grid)
+ *             sand (warm, light)
+ *             paper (clean, light)
+ * aspects:    16-9 | 4-5 | 3-4 | 5-4 | 3-2 | 1-1
+ */
+type Props = {
+  prompt: string;
+  caption?: string;
+  aspect?: '16-9' | '4-5' | '3-4' | '5-4' | '3-2' | '1-1';
+  variant?: 'navy' | 'sand' | 'paper';
+  label?: string;
+  class?: string;
+  style?: string;
+};
+const {
+  prompt,
+  caption,
+  aspect = '4-5',
+  variant = 'navy',
+  label = 'Photo brief',
+  class: className = '',
+  style = '',
+} = Astro.props as Props;
+const variantClass = variant === 'sand' ? 'sand' : variant === 'paper' ? 'paper' : '';
+---
+<figure
+  class={`ab-img-slot aspect-${aspect} ${variantClass} ${className}`}
+  role="img"
+  aria-label={caption ?? prompt}
+  data-photo-prompt={prompt}
+  style={style}
+>
+  <div class="ab-img-slot__label">{label}</div>
+  <figcaption>
+    {caption && <div class="ab-img-slot__caption">{caption}</div>}
+    <div class="ab-img-slot__hint">{prompt}</div>
+  </figcaption>
+</figure>

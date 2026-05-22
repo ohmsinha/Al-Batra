@@ -1,0 +1,68 @@
+---
+import { absoluteUrl, buildHreflangs, pageTitle, organisationJsonLd } from '../../utils/seo';
+import { company } from '../../data/company';
+
+type Props = {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  locale?: 'en' | 'ar';
+  jsonLd?: object | object[];
+};
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og/default.svg',
+  ogType = 'website',
+  noindex = false,
+  locale = 'en',
+  jsonLd,
+} = Astro.props as Props;
+
+const pathname = canonical ?? Astro.url.pathname;
+const canonicalUrl = absoluteUrl(pathname);
+const ogImageUrl = absoluteUrl(ogImage);
+const hreflangs = buildHreflangs(pathname);
+const titleResolved = pageTitle(title);
+
+const jsonLdArray = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+const fullJsonLd = [organisationJsonLd(), ...jsonLdArray];
+---
+<title>{titleResolved}</title>
+<meta name="description" content={description} />
+<meta name="author" content={company.legalName} />
+<link rel="canonical" href={canonicalUrl} />
+{noindex && <meta name="robots" content="noindex,nofollow" />}
+{!noindex && <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />}
+
+{hreflangs.map((h) => (
+  <link rel={h.rel} hreflang={h.hrefLang} href={h.href} />
+))}
+
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={titleResolved} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content={locale === 'ar' ? 'ar_AE' : 'en_AE'} />
+<meta property="og:locale:alternate" content={locale === 'ar' ? 'en_AE' : 'ar_AE'} />
+<meta property="og:site_name" content={company.legalName} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={titleResolved} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<meta name="theme-color" content="#0E2A47" />
+<meta name="format-detection" content="telephone=yes" />
+
+{fullJsonLd.map((entry) => (
+  <script type="application/ld+json" set:html={JSON.stringify(entry)} />
+))}

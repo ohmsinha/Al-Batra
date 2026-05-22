@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import LeadCTA from '../components/LeadCTA.astro';
+import Reveal from '../components/Reveal.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { breadcrumbJsonLd } from '../utils/seo';
+
+const jsonLd = [breadcrumbJsonLd([
+  { name: 'Home', href: '/' },
+  { name: 'Pricing & engagement', href: '/pricing' },
+])];
+
+const tiers = [
+  {
+    name: 'Gap analysis',
+    eyebrow: 'Discovery',
+    lead: 'A clause-by-clause audit of your operation against the standard, delivered as a written report. The only thing you commit to before seeing our work.',
+    priceLine: 'Fixed fee · scoped on request',
+    priceMeta: 'AED 5,000–18,000 typical range, depending on standard, site count and scope.',
+    features: [
+      'Two on-site days, single location',
+      'Clause-by-clause findings with ownership + close-out targets',
+      'Written report, English + Arabic where required',
+      'Indicative implementation plan and budget',
+      'No commitment to further engagement',
+    ],
+    cta: 'Request a gap analysis',
+    featured: false,
+  },
+  {
+    name: 'Full implementation',
+    eyebrow: 'Most engagements',
+    lead: 'The full five-phase engagement, from gap analysis through Stage 2 closure, on a fixed fee. Single lead consultant, weekly on-site, bilingual documentation.',
+    priceLine: 'Fixed fee · per standard',
+    priceMeta: 'AED 45,000–120,000 typical range, depending on standard, sector, site count and integration.',
+    features: [
+      'All five phases — gap analysis through certification',
+      'Single lead consultant for the full engagement',
+      'Weekly on-site presence at your operating site',
+      'Bilingual documentation where required',
+      'Internal-auditor training for 2–4 nominated staff',
+      'First surveillance audit (12 months) included',
+    ],
+    cta: 'Request a proposal',
+    featured: true,
+  },
+  {
+    name: 'Integrated systems',
+    eyebrow: 'Multi-standard',
+    lead: 'A single management system covering two or more standards (QMS + EMS, OHSMS + FSMS, ISMS + PIMS, etc.) — one manual, one audit cycle, one management review.',
+    priceLine: 'Fixed fee · package',
+    priceMeta: 'AED 80,000–210,000 typical range, depending on standards combined and scope.',
+    features: [
+      'Single integrated manual across combined standards',
+      'Shared internal audit cycle and management review',
+      'One certification body, one audit timeline',
+      'Bilingual documentation throughout',
+      'Internal-auditor training across combined scope',
+      'First surveillance audit included',
+    ],
+    cta: 'Discuss an integrated scope',
+    featured: false,
+  },
+];
+
+const adds = [
+  { t: 'Additional on-site days', d: 'Above the default weekly cadence — typically used for multi-site rollouts or accelerated timelines.' },
+  { t: 'Translation services', d: 'Documentation translation between EN and AR beyond what the standard requires.' },
+  { t: 'Bespoke training', d: 'Tailored awareness or auditor training beyond the included two cohorts.' },
+  { t: 'Post-certification support', d: 'Annual support cycle including pre-surveillance reviews, beyond the first surveillance.' },
+  { t: 'Tender pre-qualification packs', d: 'Curated evidence packs for specific UAE / GCC tender submissions.' },
+];
+
+const faqs = [
+  { q: 'What does "fixed fee" actually mean?', a: 'You receive a written proposal with a fixed price, a fixed scope and a fixed delivery window. The price does not change unless the scope changes — in which case any change is documented and signed off before work continues.' },
+  { q: 'Is the certification body audit fee included?', a: 'No. The certification body is a separate, accredited organisation that you contract with directly. We help you select one (we have working relationships with the major IAF-accredited bodies operating in the UAE) and we sit with you through the audit, but the audit fee is paid directly to the certifier.' },
+  { q: 'Do you offer payment in instalments?', a: 'Yes. The default schedule is 30% on engagement kick-off, 40% on management review, and 30% on Stage 2 closure. Bespoke schedules can be agreed for multi-site or integrated engagements.' },
+  { q: 'What if Stage 2 raises a major non-conformity?', a: 'We close it as part of the fixed fee. Major NC closure support is included by default, including evidence pack preparation and the corrective-action submission to the certification body.' },
+];
+---
+<BaseLayout
+  title="Pricing & engagement — Al Batra Management Consultancy"
+  description="Fixed-fee ISO certification consulting in the UAE. Gap analysis, full implementation and integrated multi-standard engagements — transparent inclusions, typical ranges, no retainers."
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.6;mask-image:radial-gradient(ellipse at 80% 100%, transparent 0%, #000 65%);-webkit-mask-image:radial-gradient(ellipse at 80% 100%, transparent 0%, #000 65%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Pricing & engagement' }]} />
+      <Reveal>
+        <div style="margin-top:32px;max-width:720px;">
+          <span class="ab-eyebrow-line">Pricing &amp; engagement</span>
+          <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">
+            Three engagement models. <span class="accent">Each on a fixed fee.</span>
+          </h1>
+          <p class="ab-lead" style="margin-top:24px;">
+            We publish ranges, not unit prices — each engagement is scoped on the standard, the sector and the number of sites in operation. Below is what every fee includes, the variations we charge separately for, and the questions we hear most.
+          </p>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Tiers -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;" class="tier-grid">
+        {tiers.map((t, i) => (
+          <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+            <div class={`ab-engage ${t.featured ? 'featured' : ''}`}>
+              {t.featured && <span class="ab-engage__badge">Most engagements</span>}
+              <span class="ab-tag">{t.eyebrow}</span>
+              <h2 class="ab-engage__title">{t.name}</h2>
+              <p class="ab-engage__lead">{t.lead}</p>
+              <div>
+                <div class="ab-engage__price">{t.priceLine}</div>
+                <div class="ab-engage__price-meta">{t.priceMeta}</div>
+              </div>
+              <ul class={`ab-checklist ${t.featured ? 'red' : ''} ab-engage__feat`} style={t.featured ? '' : ''}>
+                {t.features.map((f) => <li>{f}</li>)}
+              </ul>
+              <a href="/contact" class={`ab-btn ${t.featured ? 'ab-btn-accent' : 'ab-btn-primary'} ab-engage__cta`} style="justify-content:center;">
+                {t.cta} <Icon name="arrow-right" size={14} />
+              </a>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+      <style>
+        @media (max-width: 1024px) { .tier-grid { grid-template-columns: 1fr !important; max-width:560px; margin:0 auto; } }
+      </style>
+    </div>
+  </section>
+
+  <!-- Add-ons -->
+  <section class="ab-section ab-bg-paper-dim">
+    <div class="ab-container">
+      <Reveal>
+        <SectionHead
+          eyebrow="Charged separately"
+          title="What sits outside the fixed fee."
+          lead="The items below are intentionally not in the base scope — they vary too much engagement to engagement to price as inclusions. Each is quoted independently, on a fixed fee."
+        />
+      </Reveal>
+      <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--ab-line-cool);">
+        {adds.map((a, i) => (
+          <Reveal delay={Math.min(5, ((i % 2) + 1)) as 1|2|3|4|5}>
+            <li style={`padding:28px 24px;border-bottom:1px solid var(--ab-line-cool);${i % 2 === 0 ? 'border-right:1px solid var(--ab-line-cool);' : ''}`}>
+              <div style="display:flex;align-items:flex-start;gap:14px;">
+                <span class="ab-disk sm gold"><Icon name="plus" size={14} /></span>
+                <div>
+                  <div style="font-family:var(--ab-font-display);font-size:18px;font-weight:600;color:var(--ab-navy);letter-spacing:-0.005em;">{a.t}</div>
+                  <div style="font-size:14px;color:var(--ab-ink-soft);line-height:1.55;margin-top:6px;">{a.d}</div>
+                </div>
+              </div>
+            </li>
+          </Reveal>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Pricing FAQ -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <div class="ab-faq-grid">
+        <div class="ab-faq-aside">
+          <Reveal>
+            <span class="ab-eyebrow-line">Pricing FAQ</span>
+            <h2 class="ab-display ab-h2">Common questions about how we charge.</h2>
+            <p style="margin-top:20px;font-size:15px;color:var(--ab-steel);line-height:1.6;max-width:360px;">
+              If your engagement does not fit the patterns above, write to us with the standards, sector and site count — we can usually estimate scope and fee within a working day.
+            </p>
+            <a href="/contact" class="ab-btn ab-btn-secondary" style="margin-top:24px;">Ask about an engagement <Icon name="arrow-right" size={14} /></a>
+          </Reveal>
+        </div>
+        <div>
+          {faqs.map((it, i) => (
+            <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+              <details class="ab-faq-item" open={i === 0}>
+                <summary><span>{it.q}</span></summary>
+                <p class="ab-faq-item-body">{it.a}</p>
+              </details>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <LeadCTA />
+</BaseLayout>

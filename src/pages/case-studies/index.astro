@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import LeadCTA from '../../components/LeadCTA.astro';
+import Reveal from '../../components/Reveal.astro';
+import Icon from '../../components/Icon.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbJsonLd } from '../../utils/seo';
+
+const cases = (await getCollection('cases', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const jsonLd = [breadcrumbJsonLd([
+  { name: 'Home', href: '/' },
+  { name: 'Case studies', href: '/case-studies' },
+])];
+
+const industries = Array.from(new Set(cases.map((c) => c.data.industry)));
+const standards = Array.from(new Set(cases.flatMap((c) => c.data.standards))).sort();
+
+const casePrompts: Record<string, string> = {
+  'dubai-hotel-iso22000': 'Editorial hero photo of a UAE hotel central kitchen — gleaming stainless steel, organised dry-goods racks, HACCP form clipped to a wall — warm directional light, no people visible.',
+  'sharjah-manufacturer-9001-45001': 'Editorial wide photo of a UAE industrial fabrication floor — overhead view of a steel-cutting bay, bilingual safety signage, soft morning light through industrial skylights.',
+  'dubai-fintech-iso27001': 'Editorial photo of a sleek DIFC-style office — minimalist meeting room with a glass whiteboard showing a risk register diagram, soft daylight, no people visible.',
+  'abu-dhabi-energy-iso50001': 'Editorial photo of a UAE utility-scale solar farm at dusk — rows of panels stretching to the horizon, warm sky, BESS containers visible in the middle ground.',
+};
+---
+<BaseLayout
+  title="Case studies — UAE ISO certification engagements"
+  description="Selected case studies from Al Batra Management Consultancy's implementation practice — UAE organisations across hospitality, manufacturing, financial services and energy."
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.6;mask-image:radial-gradient(ellipse at 90% 80%, transparent 0%, #000 65%);-webkit-mask-image:radial-gradient(ellipse at 90% 80%, transparent 0%, #000 65%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Case studies' }]} />
+      <div style="margin-top:32px;display:grid;grid-template-columns:1.4fr 1fr;gap:80px;align-items:end;">
+        <Reveal>
+          <span class="ab-eyebrow-line">Case studies</span>
+          <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">
+            How the engagements actually run.<br />
+            <span class="accent">In our clients' words</span>, where they let us.
+          </h1>
+          <p class="ab-lead" style="margin-top:24px;">
+            Selected engagements from the Al Batra practice. Clients are anonymised by default — identity disclosure is per client and per case. The substance, the metrics and the lessons are not.
+          </p>
+        </Reveal>
+        <Reveal delay={2}>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-steel);">Filter (visual)</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              {industries.map((i) => <span class="ab-pill">{i}</span>)}
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              {standards.slice(0, 8).map((s) => <span class="ab-pill" style="background:var(--ab-paper);">{s}</span>)}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured case (first) -->
+  {cases[0] && (
+    <section class="ab-section">
+      <div class="ab-container">
+        <Reveal>
+          <a href={`/case-studies/${cases[0].slug}`} style="display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:center;text-decoration:none;color:inherit;">
+            <ImageSlot
+              aspect="5-4"
+              variant="navy"
+              label="Featured case"
+              caption={cases[0].data.title}
+              prompt={casePrompts[cases[0].slug] ?? `Editorial cover photo for "${cases[0].data.title}" in ${cases[0].data.location}.`}
+            />
+            <div>
+              <span class="ab-tag">Featured · {cases[0].data.industry}</span>
+              <h2 style="font-family:var(--ab-font-display);font-size:clamp(28px,3vw,40px);font-weight:600;color:var(--ab-navy);letter-spacing:-0.02em;line-height:1.15;margin:18px 0 18px;text-wrap:balance;">
+                {cases[0].data.title}
+              </h2>
+              <p style="font-size:17px;color:var(--ab-ink-soft);line-height:1.6;margin:0 0 24px;">{cases[0].data.summary}</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+                {cases[0].data.standards.map((s) => <span class="ab-pill">{s}</span>)}
+              </div>
+              {cases[0].data.metrics.length > 0 && (
+                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:18px;padding-top:18px;border-top:1px solid var(--ab-line-cool);">
+                  {cases[0].data.metrics.slice(0, 4).map((m) => (
+                    <div>
+                      <div style="font-family:var(--ab-font-display);font-size:22px;font-weight:600;color:var(--ab-navy);letter-spacing:-0.01em;line-height:1.1;">{m.value}</div>
+                      <div style="font-size:12px;color:var(--ab-steel);margin-top:4px;">{m.label}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div style="margin-top:28px;display:inline-flex;align-items:center;gap:8px;color:var(--ab-navy);font-weight:600;font-size:14px;">
+                Read full case <Icon name="arrow-right" size={14} />
+              </div>
+            </div>
+          </a>
+        </Reveal>
+      </div>
+    </section>
+  )}
+
+  <!-- Other cases grid -->
+  {cases.length > 1 && (
+    <section class="ab-section ab-bg-sand">
+      <div class="ab-container">
+        <Reveal>
+          <SectionHead
+            eyebrow="More from the practice"
+            title="Engagements grouped by sector."
+            lead="Each case below is published with client consent. Where identity is sensitive, we anonymise. The substance is unchanged."
+          />
+        </Reveal>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;" class="ab-cases-grid">
+          {cases.slice(1).map((c, i) => (
+            <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+              <a class="ab-case" href={`/case-studies/${c.slug}`}>
+                <ImageSlot
+                  aspect="16-9"
+                  variant="navy"
+                  label="Case cover"
+                  caption={c.data.industry}
+                  prompt={casePrompts[c.slug] ?? `Editorial cover for "${c.data.title}" in ${c.data.location}.`}
+                  class="ab-case__media"
+                />
+                <div class="ab-case__body">
+                  <div class="ab-case__industry">{c.data.industry} · {c.data.location}</div>
+                  <h3 class="ab-case__title">{c.data.title}</h3>
+                  <p class="ab-case__desc">{c.data.summary}</p>
+                  <div class="ab-case__meta">
+                    {c.data.standards.map((s) => <span class="ab-pill">{s}</span>)}
+                  </div>
+                </div>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+      <style>
+        @media (max-width: 960px) { .ab-cases-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 640px) { .ab-cases-grid { grid-template-columns: 1fr !important; } }
+      </style>
+    </section>
+  )}
+
+  <LeadCTA
+    heading="Discuss your operation under NDA."
+    body="Most enquiries arrive under a mutual NDA from week one. If your engagement is sensitive — pre-IPO, M&A, contested tender — we are comfortable working confidentially throughout."
+  />
+</BaseLayout>

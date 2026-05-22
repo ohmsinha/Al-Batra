@@ -1,0 +1,233 @@
+---
+/**
+ * Arabic landing — RTL composition mirroring the English homepage core.
+ * Full Arabic content collections will follow; this page already delivers a
+ * fully usable Arabic surface with hero, services, methodology, coverage, CTA.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Reveal from '../../components/Reveal.astro';
+import Icon from '../../components/Icon.astro';
+import { company } from '../../data/company';
+import { standards } from '../../data/standards';
+
+const featured = [
+  { code: 'ISO 9001',  title: 'إدارة الجودة',              slug: 'iso-9001',  icon: 'gauge' },
+  { code: 'ISO 14001', title: 'إدارة البيئة',              slug: 'iso-14001', icon: 'leaf' },
+  { code: 'ISO 45001', title: 'الصحة والسلامة المهنية',    slug: 'iso-45001', icon: 'shield' },
+  { code: 'ISO 22000', title: 'سلامة الغذاء',              slug: 'iso-22000', icon: 'utensils' },
+  { code: 'ISO 27001', title: 'أمن المعلومات',             slug: 'iso-27001', icon: 'lock' },
+  { code: 'ISO 50001', title: 'إدارة الطاقة',              slug: 'iso-50001', icon: 'spark' },
+];
+
+const phases = [
+  { n: '٠١', t: 'تحليل الفجوات',     d: 'تدقيق ميداني مقابل المعيار، مع تقرير مكتوب وخطة عمل بنداً بنداً.', meta: 'الأسبوع 1–2' },
+  { n: '٠٢', t: 'التوثيق',           d: 'دليل وإجراءات وسجلات مكتوبة لعمليتك، ثنائية اللغة عند الحاجة.', meta: 'الأسبوع 2–6' },
+  { n: '٠٣', t: 'التطبيق',           d: 'نشر ميداني، جلسات توعية، ومسار أدلة عملي يتبعه المدققون.', meta: 'الأسبوع 4–10' },
+  { n: '٠٤', t: 'التدقيق الداخلي',   d: 'دورة تدقيق كاملة، سجل النتائج، إجراءات تصحيحية، ومراجعة إدارية.', meta: 'الأسبوع 8–11' },
+  { n: '٠٥', t: 'منح الشهادة',       d: 'دعم المرحلتين الأولى والثانية، وإغلاق حالات عدم المطابقة.', meta: 'الأسبوع 12+' },
+];
+
+const emirates = ['الشارقة', 'دبي', 'أبوظبي', 'عجمان', 'رأس الخيمة', 'الفجيرة', 'أم القيوين'];
+---
+<BaseLayout
+  locale="ar"
+  title="استشارات شهادات الأيزو في الإمارات"
+  description="البتراء للاستشارات الإدارية — استشارات تطبيق شهادات الأيزو في دولة الإمارات العربية المتحدة، مع توثيق ثنائي اللغة ورسوم محددة مسبقًا."
+>
+  <!-- Hero (RTL) -->
+  <section class="ab-hero-v2" dir="rtl">
+    <div class="ab-container">
+      <div class="ab-hero-v2-grid" style="grid-template-columns:1fr 1.15fr;">
+        <Reveal class="ab-hero-v2__visual" delay={2}>
+          <div class="ab-hero-v2__doc-back" aria-hidden="true" style="left:-32px;right:auto;transform:rotate(-3deg);">
+            <article class="ab-doc">
+              <header class="ab-doc__head">
+                <span class="ab-doc__ref">إغلاق التدقيق · IA-2024-08</span>
+                <Icon name="badge-check" size={20} class="" stroke={1.5} />
+              </header>
+              <h3 class="ab-doc__title">إغلاق التدقيق · ISO 14001</h3>
+              <dl style="margin:0;">
+                <div class="ab-doc__row"><dt>النطاق</dt><dd>عمليات الموقع</dd></div>
+                <div class="ab-doc__row"><dt>النتائج</dt><dd>صفر رئيسية · ٢ ثانوية</dd></div>
+                <div class="ab-doc__row"><dt>الحالة</dt><dd style="color:var(--ab-success);">مغلقة</dd></div>
+              </dl>
+            </article>
+          </div>
+          <div class="ab-hero-v2__doc-main" style="transform:rotate(1.5deg);">
+            <article class="ab-doc">
+              <header class="ab-doc__head">
+                <span class="ab-doc__ref">جاهزية المرحلة ٢ · Q-2024-117</span>
+                <span class="ab-doc__stamp">جاهز<br />للتدقيق</span>
+              </header>
+              <h3 class="ab-doc__title">نظام إدارة الجودة — ISO 9001:2015</h3>
+              <dl style="margin:0 0 14px;">
+                <div class="ab-doc__row"><dt>العميل</dt><dd>التصنيع · الشارقة</dd></div>
+                <div class="ab-doc__row"><dt>التعاقد</dt><dd>رسوم محددة · ١٢ أسبوعًا</dd></div>
+                <div class="ab-doc__row"><dt>اللغات</dt><dd>الإنجليزية · العربية</dd></div>
+              </dl>
+              <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--ab-line-warm);">
+                <div style="font-family:var(--ab-font-mono);font-size:10px;color:var(--ab-steel);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">قائمة ما قبل التدقيق</div>
+                <div class="ab-doc__check"><Icon name="check" size={16} stroke={2} /><span>دليل الجودة وبيان النطاق</span></div>
+                <div class="ab-doc__check"><Icon name="check" size={16} stroke={2} /><span>٢٧ إجراءً · ٤١ سجلًا</span></div>
+                <div class="ab-doc__check"><Icon name="check" size={16} stroke={2} /><span>إكتمال التدقيق الداخلي</span></div>
+                <div class="ab-doc__check"><Icon name="check" size={16} stroke={2} /><span>مراجعة الإدارة موثقة</span></div>
+              </div>
+            </article>
+          </div>
+        </Reveal>
+
+        <Reveal class="ab-hero-v2__copy">
+          <span class="ab-eyebrow-line">شهادات الأيزو · الإمارات</span>
+          <h1 class="ab-display">
+            شهادات الأيزو،<br />
+            <span class="accent" style="font-style:normal;">تطبيقًا</span><br />
+            يجتاز التدقيق.
+          </h1>
+          <p class="ab-hero-v2__lead">
+            تأخذ {company.arabicName} المؤسسات في دولة الإمارات العربية المتحدة عبر دورة شهادات الأيزو الكاملة — تحليل الفجوات، التوثيق، التطبيق، التدقيق الداخلي، ودعم المرحلتين الأولى والثانية، وفق رسوم محددة مسبقًا، وبتوثيق ثنائي اللغة.
+          </p>
+          <div class="ab-hero-v2__cta-row">
+            <a href="/ar/contact" class="ab-btn ab-btn-primary">اطلب عرضًا <Icon name="arrow-right" size={16} /></a>
+            <a href="/ar/services" class="ab-btn ab-btn-secondary">المعايير التي نغطيها</a>
+          </div>
+          <div class="ab-hero-v2__trust">
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <strong>+٦٠٠</strong>
+              <span>منشأة في الإمارات</span>
+            </div>
+            <div style="width:1px;height:32px;background:var(--ab-line-warm);"></div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <strong>+١٠ سنوات</strong>
+              <span>منذ ٢٠١٣</span>
+            </div>
+            <div style="width:1px;height:32px;background:var(--ab-line-warm);"></div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <strong>بلدية الشارقة</strong>
+              <span>معتمدون للتدريب على ممارسات النظافة الجيدة</span>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured services -->
+  <section class="ab-section" dir="rtl">
+    <div class="ab-container">
+      <Reveal>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:24px 48px;align-items:flex-end;margin-bottom:56px;padding-bottom:20px;border-bottom:1px solid var(--ab-line-cool);">
+          <div>
+            <span class="ab-eyebrow-line">خدمات الاستشارات</span>
+            <h2 class="ab-display ab-h2">المعايير التي تختار المؤسسات الإماراتية اعتمادها فعلًا.</h2>
+            <p style="max-width:56ch;margin-top:16px;font-size:17px;line-height:1.55;color:var(--ab-ink-soft);">
+              ممارسة مركّزة على معايير أنظمة الإدارة الأكثر صلة بالمشغّلين في الإمارات. يُحدَّد نطاق كل تعاقد بحسب القطاع وجهة منح الشهادة.
+            </p>
+          </div>
+          <a href="/ar/services" class="ab-link" style="white-space:nowrap;">جميع المعايير ←</a>
+        </div>
+      </Reveal>
+      <div class="ab-services-grid">
+        {featured.map((s, i) => (
+          <Reveal delay={Math.min(5, ((i % 3) + 1)) as 1|2|3|4|5}>
+            <a class="ab-service-card" href={`/ar/services/${s.slug}`}>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+                <span class="ab-disk gold"><Icon name={s.icon as any} size={22} /></span>
+                <span class="ab-service-code">{s.code}</span>
+              </div>
+              <h3 class="ab-service-title" style="margin-top:18px;">{s.title}</h3>
+              <div style="flex:1;"></div>
+              <div class="ab-service-card-cta" style="display:flex;align-items:center;gap:6px;">
+                اقرأ المزيد <Icon name="arrow-right" size={14} />
+              </div>
+            </a>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Methodology ladder -->
+  <section class="ab-section ab-bg-paper-dim" dir="rtl">
+    <div class="ab-container">
+      <Reveal>
+        <span class="ab-eyebrow-line">المنهجية</span>
+        <h2 class="ab-display ab-h2" style="max-width:30ch;margin-bottom:24px;">خمس مراحل. رسوم محددة. بلا اشتراكات مفتوحة.</h2>
+        <p style="font-size:17px;color:var(--ab-ink-soft);line-height:1.6;max-width:60ch;margin:0 0 48px;">
+          يسير كل تعاقد عبر المراحل الخمس نفسها. يختلف العمق باختلاف المعيار والقطاع وحجم العملية — لا تختلف البنية.
+        </p>
+      </Reveal>
+      <div class="ab-ladder">
+        {phases.map((p, i) => (
+          <Reveal delay={Math.min(5, ((i % 5) + 1)) as 1|2|3|4|5}>
+            <div class="ab-ladder__step">
+              <div class="ab-ladder__num">{p.n}</div>
+              <div>
+                <h3 class="ab-ladder__head">{p.t}</h3>
+                <p class="ab-ladder__body">{p.d}</p>
+              </div>
+              <div class="ab-ladder__meta">{p.meta}</div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- UAE coverage strip -->
+  <section style="padding:56px 0;background:var(--ab-navy);color:#fff;position:relative;overflow:hidden;" dir="rtl" aria-label="تغطية الإمارات">
+    <div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at 50% 50%, #000 30%, transparent 80%);-webkit-mask-image:radial-gradient(ellipse at 50% 50%, #000 30%, transparent 80%);"></div>
+    <div class="ab-container" style="position:relative;">
+      <Reveal>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+            <span class="ab-tag gold"><span style="color:var(--ab-gold);">تغطية على مستوى الإمارات</span></span>
+            <span style="font-family:var(--ab-font-display);font-size:clamp(20px,2.2vw,28px);font-weight:500;letter-spacing:-0.005em;line-height:1.4;max-width:46ch;">
+              المقر الرئيسي في الشارقة. استشاريون ميدانيون في جميع الإمارات السبع.
+            </span>
+          </div>
+        </div>
+      </Reveal>
+      <Reveal delay={1}>
+        <ul style="list-style:none;padding:0;margin:36px 0 0;display:grid;grid-template-columns:repeat(7,1fr);gap:0;border-top:1px solid rgba(255,255,255,.12);">
+          {emirates.map((e) => (
+            <li style="padding:20px 14px;border-inline-start:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:6px;">
+              <span style="font-family:var(--ab-font-display);font-size:15px;font-weight:600;color:#fff;">{e}</span>
+              <span style="font-family:var(--ab-font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ab-gold);">دعم ميداني</span>
+            </li>
+          ))}
+        </ul>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Lead CTA -->
+  <section class="ab-section" dir="rtl">
+    <div class="ab-container">
+      <Reveal>
+        <div class="ab-lead-cta ab-corners">
+          <div>
+            <span class="ab-eyebrow-line" style="color:var(--ab-gold);">اطلب عرضًا</span>
+            <h2 class="ab-display ab-h2" style="color:#fff;">ابدأ بتحليل فجوات مكتوب وخطة بسعر محدد.</h2>
+            <p>أخبرنا عن مؤسستك والمعايير التي تستهدف الحصول عليها. سيردّ فريقنا الاستشاري بتحليل فجوات مكتوب وعرض تنفيذ بسعر محدد — عادةً خلال يوم عمل واحد.</p>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-top:32px;">
+              <div style="display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.85);font-size:14px;"><Icon name="check" size={16} stroke={2} class="" /> تحليل فجوات مكتوب بنداً بنداً</div>
+              <div style="display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.85);font-size:14px;"><Icon name="check" size={16} stroke={2} class="" /> سعر محدد — بلا اشتراك مفتوح</div>
+              <div style="display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.85);font-size:14px;"><Icon name="check" size={16} stroke={2} class="" /> ردّ من استشاري، وليس من قناة مبيعات</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <a href="/ar/contact" class="ab-btn ab-btn-accent" style="justify-content:center;padding:14px 22px;">
+              اطلب عرضًا الآن <Icon name="arrow-right" size={16} />
+            </a>
+            <a href={`tel:${company.phones[0].tel}`} class="ab-btn ab-btn-ghost-light" style="justify-content:center;padding:14px 22px;">
+              <Icon name="phone" size={14} /> {company.phones[0].display}
+            </a>
+            <a href={`mailto:${company.email}`} class="ab-btn ab-btn-ghost-light" style="justify-content:center;padding:14px 22px;">
+              <Icon name="mail" size={14} /> {company.email}
+            </a>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+</BaseLayout>

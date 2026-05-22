@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHead from './SectionHead.astro';
+import Reveal from './Reveal.astro';
+import ImageSlot from './ImageSlot.astro';
+import Icon from './Icon.astro';
+
+type Props = { locale?: 'en' | 'ar'; limit?: number };
+const { locale = 'en', limit = 3 } = Astro.props as Props;
+const prefix = locale === 'ar' ? '/ar' : '';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, limit);
+
+const formatter = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+const imageHints: Record<string, string> = {
+  default: 'Editorial photograph related to UAE business compliance. Warm sand tones, soft directional light, no human faces, document-led composition.',
+};
+---
+<section class="ab-section" aria-labelledby="insights">
+  <div class="ab-container">
+    <Reveal>
+      <SectionHead
+        eyebrow="Insights"
+        title="Guidance and analysis from our consulting practice."
+        lead="Practical reading for quality, HSE and operations leaders implementing ISO management systems in the UAE."
+        link={{ href: `${prefix}/insights`, label: 'All insights' }}
+      />
+    </Reveal>
+    <div class="ab-insights-grid">
+      {posts.map((p, i) => (
+        <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+          <a class="ab-insight-card" href={`${prefix}/insights/${p.slug}`} style="display:flex;flex-direction:column;padding:0;overflow:hidden;">
+            <ImageSlot
+              aspect="16-9"
+              variant="navy"
+              label="Article cover"
+              prompt={`Editorial cover for an Al Batra insight titled "${p.data.title}". Composition should reflect ${p.data.tag.toLowerCase()} — document close-ups, compliance artefacts, UAE business context. Restrained palette: navy/sand/gold accents. No stock-photo people.`}
+            />
+            <div style="padding:24px 26px 26px;flex:1;display:flex;flex-direction:column;">
+              <div class="ab-insight-tag" style="margin-bottom:14px;">{p.data.tag}</div>
+              <div class="ab-insight-title" style="margin-top:0;">{p.data.title}</div>
+              <div style="flex:1;"></div>
+              <div class="ab-insight-meta" style="display:flex;align-items:center;gap:10px;">
+                <span>{formatter.format(p.data.publishedAt)}</span>
+                <span style="width:3px;height:3px;background:var(--ab-mute);border-radius:50%;"></span>
+                <span>{p.data.readingTime} read</span>
+                <span style="flex:1;"></span>
+                <Icon name="arrow-up-right" size={16} />
+              </div>
+            </div>
+          </a>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>

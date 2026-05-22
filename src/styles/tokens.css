@@ -1,0 +1,141 @@
+/* ============================================================
+   Al Batra Management Consultancy — design tokens
+   Mirrors the design handoff (colors_and_type.css).
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  /* Brand */
+  --ab-navy:        #0E2A47;
+  --ab-navy-deep:   #091B2E;
+  --ab-navy-tint:   #1B3D62;
+  --ab-red:         #B91C26;
+  --ab-red-deep:    #931017;
+  --ab-sand:        #F6F1E8;
+  --ab-sand-deep:   #ECE4D2;
+  --ab-gold:        #C9A96E;
+
+  /* Neutrals */
+  --ab-ink:         #101820;
+  --ab-ink-soft:    #2A3340;
+  --ab-steel:       #5A6573;
+  --ab-mute:        #8A93A0;
+  --ab-line-warm:   #E6E2D9;
+  --ab-line-cool:   #E5E7EB;
+  --ab-paper:       #FFFFFF;
+  --ab-paper-dim:   #FAFAF8;
+
+  /* Semantic */
+  --ab-success:     #1F6B3A;
+  --ab-success-bg:  #E7F1EB;
+  --ab-warning:     #A4660B;
+  --ab-warning-bg:  #FBF1DD;
+  --ab-danger:      #B91C26;
+  --ab-danger-bg:   #FBE8E9;
+  --ab-info:        #1D4F8B;
+  --ab-info-bg:     #E7EEF7;
+
+  /* Type families */
+  --ab-font-display: "Inter Tight", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --ab-font-sans:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --ab-font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ab-font-arabic:  "IBM Plex Sans Arabic", "Noto Sans Arabic", "Geeza Pro", "Tahoma", sans-serif;
+
+  /* Type scale */
+  --ab-fs-display-xl: clamp(48px, 6vw, 84px);
+  --ab-fs-display-lg: clamp(40px, 4.5vw, 60px);
+  --ab-fs-display-md: clamp(32px, 3.2vw, 44px);
+  --ab-fs-display-sm: clamp(24px, 2.4vw, 32px);
+  --ab-fs-eyebrow:   12px;
+  --ab-fs-meta:      13px;
+  --ab-fs-body-sm:   14px;
+  --ab-fs-body:      16px;
+  --ab-fs-body-lg:   18px;
+  --ab-fs-body-xl:   20px;
+
+  /* Line height */
+  --ab-lh-display:   1.08;
+  --ab-lh-heading:   1.2;
+  --ab-lh-tight:     1.35;
+  --ab-lh-body:      1.6;
+  --ab-lh-prose:     1.75;
+
+  /* Weight */
+  --ab-fw-light:     300;
+  --ab-fw-regular:   400;
+  --ab-fw-medium:    500;
+  --ab-fw-semibold:  600;
+  --ab-fw-bold:      700;
+
+  /* Tracking */
+  --ab-tracking-eyebrow: 0.14em;
+  --ab-tracking-tight:  -0.022em;
+  --ab-tracking-snug:   -0.01em;
+  --ab-tracking-wide:    0.02em;
+
+  /* Spacing (4 px base) */
+  --ab-sp-1:   4px;
+  --ab-sp-2:   8px;
+  --ab-sp-3:  12px;
+  --ab-sp-4:  16px;
+  --ab-sp-6:  24px;
+  --ab-sp-8:  32px;
+  --ab-sp-12: 48px;
+  --ab-sp-16: 64px;
+  --ab-sp-24: 96px;
+  --ab-sp-32: 128px;
+
+  /* Radius */
+  --ab-r-input:  2px;
+  --ab-r-button: 4px;
+  --ab-r-card:   8px;
+  --ab-r-frame: 12px;
+
+  /* Hairline */
+  --ab-bw: 1px;
+
+  /* Shadow (warm navy-tinted) */
+  --ab-sh-sm: 0 1px 2px rgba(14,42,71,.06);
+  --ab-sh-md: 0 6px 16px rgba(14,42,71,.08);
+  --ab-sh-lg: 0 24px 48px rgba(14,42,71,.12);
+  --ab-sh-xl: 0 40px 80px -20px rgba(14,42,71,.22), 0 12px 32px -8px rgba(14,42,71,.10);
+  --ab-sh-inset: inset 0 1px 0 rgba(255,255,255,.06);
+
+  /* Gradients */
+  --ab-grad-navy:     linear-gradient(135deg, var(--ab-navy-tint) 0%, var(--ab-navy) 55%, var(--ab-navy-deep) 100%);
+  --ab-grad-navy-soft: radial-gradient(ellipse at 20% 10%, rgba(201,169,110,.16), transparent 55%), linear-gradient(135deg, var(--ab-navy-tint), var(--ab-navy));
+  --ab-grad-sand:     linear-gradient(180deg, var(--ab-sand) 0%, var(--ab-sand-deep) 100%);
+  --ab-grad-paper:    linear-gradient(180deg, #fff 0%, var(--ab-paper-dim) 100%);
+  --ab-grad-gold-line: linear-gradient(90deg, transparent 0%, var(--ab-gold) 20%, var(--ab-gold) 80%, transparent 100%);
+  --ab-grad-red-line:  linear-gradient(90deg, transparent 0%, var(--ab-red) 20%, var(--ab-red) 80%, transparent 100%);
+
+  /* Motion */
+  --ab-ease-out: cubic-bezier(.2,.7,.2,1);
+  --ab-ease-in-out: cubic-bezier(.6,.05,.3,.95);
+  --ab-dur-fast:   150ms;
+  --ab-dur-base:   200ms;
+  --ab-dur-slow:   400ms;
+
+  /* Layout */
+  --ab-content-max:   1280px;
+  --ab-prose-max:      720px;
+  --ab-gutter:          24px;
+  --ab-section-y:       96px;
+  --ab-section-y-sm:    48px;
+
+  /* Semantic surface tokens */
+  --bg:           var(--ab-paper);
+  --bg-alt:       var(--ab-sand);
+  --bg-invert:    var(--ab-navy);
+  --fg:           var(--ab-ink);
+  --fg-soft:      var(--ab-ink-soft);
+  --fg-muted:     var(--ab-steel);
+  --fg-faint:     var(--ab-mute);
+  --fg-on-invert: #FFFFFF;
+  --line:         var(--ab-line-cool);
+  --line-warm:    var(--ab-line-warm);
+  --link:         var(--ab-navy);
+  --link-hover:   var(--ab-red);
+  --accent:       var(--ab-red);
+}

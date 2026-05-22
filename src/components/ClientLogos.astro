@@ -1,0 +1,199 @@
+---
+import SectionHead from './SectionHead.astro';
+import Reveal from './Reveal.astro';
+import Icon from './Icon.astro';
+
+/**
+ * Client logo wall — UAE organisations Al Batra has served.
+ * Real client names from albatraconsultants.com. Each tile is a typographic
+ * placeholder you can swap for a real PNG/SVG logo later by replacing the
+ * `wordmark` rendering with an <img>.
+ */
+
+type Client = {
+  name: string;
+  industry: string;
+  /** Optional override for the wordmark text (e.g. all-caps brand styling) */
+  wordmark?: string;
+  /** Optional small mark before the wordmark */
+  initials?: string;
+  /** Font family hint to vary the wall visually */
+  font?: 'display' | 'sans' | 'serif' | 'mono';
+};
+
+const clients: Client[] = [
+  { name: 'ADNOC',                       industry: 'Energy · Oil & Gas',         wordmark: 'ADNOC',                     font: 'sans' },
+  { name: 'Etihad Airways',              industry: 'Aviation',                    wordmark: 'Etihad',                    font: 'display' },
+  { name: 'Shangri-La',                  industry: 'Hospitality',                 wordmark: 'Shangri-La',                font: 'serif' },
+  { name: 'Spinneys',                    industry: 'Retail · Grocery',            wordmark: 'Spinneys',                  font: 'display' },
+  { name: 'Medcare',                     industry: 'Healthcare',                  wordmark: 'Medcare',                   font: 'sans' },
+  { name: 'Millennium Hotel',            industry: 'Hospitality',                 wordmark: 'Millennium',                font: 'serif' },
+  { name: 'Intercon DXB Marina',         industry: 'Hospitality · Marina',        wordmark: 'Intercon Marina',           font: 'display' },
+  { name: 'Dubai Asset Management',      industry: 'Financial services',          wordmark: 'Dubai Asset Mgmt.',         font: 'sans' },
+  { name: 'Fleetline Shipping',          industry: 'Logistics · Maritime',        wordmark: 'Fleetline',                 font: 'display' },
+  { name: 'Joseph Group',                industry: 'Diversified group',           wordmark: 'Joseph Group',              font: 'serif' },
+  { name: 'Kingston Holding',            industry: 'Holding · Investment',        wordmark: 'Kingston',                  font: 'sans' },
+  { name: 'Al Bateel',                   industry: 'Retail · Trading',            wordmark: 'Al Bateel',                 font: 'display' },
+  { name: 'American Center',             industry: 'Education · Cultural',        wordmark: 'American Center',           font: 'serif' },
+  { name: 'Rainbow Catering',            industry: 'Food service',                wordmark: 'Rainbow',                   font: 'display' },
+  { name: 'Nasr Ceremonies',             industry: 'Events',                      wordmark: 'Nasr',                      font: 'serif' },
+  { name: 'Universal Carlton Industries',industry: 'Manufacturing',               wordmark: 'Universal Carlton',         font: 'sans' },
+  { name: 'Universal TSSC',              industry: 'Services',                    wordmark: 'Universal TSSC',            font: 'sans' },
+  { name: 'Global Emirates Services',    industry: 'General services',            wordmark: 'Global Emirates',           font: 'display' },
+  { name: 'UHSHJ',                       industry: 'Healthcare',                  wordmark: 'UHSHJ',                     font: 'mono' },
+];
+
+const fontStyle: Record<NonNullable<Client['font']>, string> = {
+  display: 'font-family:var(--ab-font-display);font-weight:600;letter-spacing:-0.02em;',
+  sans:    'font-family:var(--ab-font-sans);font-weight:700;letter-spacing:-0.01em;',
+  serif:   'font-family:Georgia, "Times New Roman", serif;font-weight:600;letter-spacing:0.005em;font-style:italic;',
+  mono:    'font-family:var(--ab-font-mono);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;',
+};
+---
+<section class="ab-section" aria-labelledby="clients-served">
+  <div class="ab-container">
+    <Reveal>
+      <SectionHead
+        eyebrow="Selected clients"
+        title="UAE organisations we have certified."
+        lead="A selection of the 600+ organisations Al Batra has taken through ISO certification across the UAE — hospitality, healthcare, energy, manufacturing, retail, aviation and government-linked services."
+        link={{ href: '/case-studies', label: 'Read case studies' }}
+      />
+    </Reveal>
+
+    <!-- Logo grid -->
+    <div class="ab-logo-wall">
+      {clients.map((c, i) => (
+        <Reveal delay={Math.min(5, ((i % 4) + 1)) as 1|2|3|4|5}>
+          <div class="ab-logo-tile" title={`${c.name} · ${c.industry}`} aria-label={`${c.name} — ${c.industry}`}>
+            <div class="ab-logo-tile__wordmark" style={fontStyle[c.font ?? 'display']}>
+              {c.wordmark ?? c.name}
+            </div>
+            <div class="ab-logo-tile__industry">{c.industry}</div>
+          </div>
+        </Reveal>
+      ))}
+      <Reveal delay={5}>
+        <a href="/case-studies" class="ab-logo-tile ab-logo-tile--more" aria-label="And 580 more — read case studies">
+          <div class="ab-logo-tile__plus" aria-hidden="true">
+            <Icon name="arrow-up-right" size={20} />
+          </div>
+          <div class="ab-logo-tile__wordmark" style={fontStyle.display}>+ 580 more</div>
+          <div class="ab-logo-tile__industry">Read case studies</div>
+        </a>
+      </Reveal>
+    </div>
+
+    <!-- Footnote -->
+    <Reveal delay={2}>
+      <div style="margin-top:32px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ab-steel);justify-content:center;text-align:center;">
+        <span style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;">A small selection · 19 of 600+</span>
+        <span style="width:3px;height:3px;background:var(--ab-mute);border-radius:50%;"></span>
+        <span>Published with client consent. Identity disclosure for confidential engagements available on NDA.</span>
+      </div>
+    </Reveal>
+  </div>
+</section>
+
+<style>
+  .ab-logo-wall {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border: 1px solid var(--ab-line-warm);
+    border-radius: var(--ab-r-frame);
+    overflow: hidden;
+    background: #fff;
+  }
+  .ab-logo-tile {
+    aspect-ratio: 5 / 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 24px 18px;
+    border-right: 1px solid var(--ab-line-warm);
+    border-bottom: 1px solid var(--ab-line-warm);
+    text-align: center;
+    transition: background var(--ab-dur-base) var(--ab-ease-out);
+    position: relative;
+    overflow: hidden;
+  }
+  .ab-logo-tile::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(201,169,110,.08), transparent 60%);
+    opacity: 0;
+    transition: opacity var(--ab-dur-base) var(--ab-ease-out);
+    pointer-events: none;
+  }
+  .ab-logo-tile:hover { background: var(--ab-sand); }
+  .ab-logo-tile:hover::before { opacity: 1; }
+  .ab-logo-tile__wordmark {
+    font-size: clamp(14px, 1.6vw, 19px);
+    color: var(--ab-navy);
+    line-height: 1.1;
+    transition: transform var(--ab-dur-base) var(--ab-ease-out);
+    position: relative;
+  }
+  .ab-logo-tile:hover .ab-logo-tile__wordmark { transform: translateY(-2px); }
+  .ab-logo-tile__industry {
+    font-family: var(--ab-font-mono);
+    font-size: 10px;
+    color: var(--ab-steel);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.4;
+    position: relative;
+  }
+  .ab-logo-tile--more {
+    background: var(--ab-navy);
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .ab-logo-tile--more::before {
+    background: radial-gradient(circle at 50% 50%, rgba(201,169,110,.18), transparent 60%);
+    opacity: 1;
+  }
+  .ab-logo-tile--more .ab-logo-tile__wordmark { color: #fff; }
+  .ab-logo-tile--more .ab-logo-tile__industry { color: var(--ab-gold); }
+  .ab-logo-tile--more:hover { background: var(--ab-navy-deep); }
+  .ab-logo-tile--more:hover .ab-logo-tile__wordmark { transform: translateY(-2px); }
+  .ab-logo-tile__plus {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    margin-bottom: 4px;
+    transition: border-color var(--ab-dur-base) var(--ab-ease-out);
+  }
+  .ab-logo-tile--more:hover .ab-logo-tile__plus { border-color: var(--ab-gold); color: var(--ab-gold); }
+
+  /* Edge cleanup */
+  .ab-logo-tile:nth-child(5n) { border-right: 0; }
+  .ab-logo-tile:nth-last-child(-n+5):nth-child(n+16) { border-bottom: 0; }
+
+  @media (max-width: 1024px) {
+    .ab-logo-wall { grid-template-columns: repeat(4, 1fr); }
+    .ab-logo-tile:nth-child(5n) { border-right: 1px solid var(--ab-line-warm); }
+    .ab-logo-tile:nth-child(4n) { border-right: 0; }
+    .ab-logo-tile:nth-last-child(-n+4):nth-child(n+16) { border-bottom: 1px solid var(--ab-line-warm); }
+  }
+  @media (max-width: 720px) {
+    .ab-logo-wall { grid-template-columns: repeat(3, 1fr); }
+    .ab-logo-tile:nth-child(4n) { border-right: 1px solid var(--ab-line-warm); }
+    .ab-logo-tile:nth-child(3n) { border-right: 0; }
+  }
+  @media (max-width: 480px) {
+    .ab-logo-wall { grid-template-columns: repeat(2, 1fr); }
+    .ab-logo-tile:nth-child(3n) { border-right: 1px solid var(--ab-line-warm); }
+    .ab-logo-tile:nth-child(2n) { border-right: 0; }
+  }
+</style>

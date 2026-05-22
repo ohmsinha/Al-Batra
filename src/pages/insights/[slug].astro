@@ -1,0 +1,183 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import LeadCTA from '../../components/LeadCTA.astro';
+import Reveal from '../../components/Reveal.astro';
+import Icon from '../../components/Icon.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+import { articleJsonLd, breadcrumbJsonLd } from '../../utils/seo';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('blog', ({ data }) => !data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+type Props = { entry: CollectionEntry<'blog'> };
+const { entry } = Astro.props as Props;
+const { Content, headings } = await entry.render();
+const data = entry.data;
+const formatter = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+
+const all = await getCollection('blog', ({ data }) => !data.draft);
+const others = all
+  .filter((e) => e.slug !== entry.slug)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+
+const breadcrumbItems = [
+  { name: 'Home', href: '/' },
+  { name: 'Insights', href: '/insights' },
+  { name: data.title, href: `/insights/${entry.slug}` },
+];
+
+const jsonLd = [
+  breadcrumbJsonLd(breadcrumbItems),
+  articleJsonLd({
+    title: data.title,
+    description: data.summary,
+    url: `/insights/${entry.slug}`,
+    author: data.author,
+    publishedAt: data.publishedAt,
+    updatedAt: data.updatedAt,
+    image: data.ogImage,
+  }),
+];
+
+const h2s = headings.filter((h) => h.depth === 2);
+---
+<BaseLayout
+  title={data.seoTitle ?? data.title}
+  description={data.seoDescription ?? data.summary}
+  ogType="article"
+  ogImage={data.ogImage}
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint-fine" style="position:absolute;inset:0;opacity:.5;mask-image:radial-gradient(ellipse at 100% 0%, #000 0%, transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 100% 0%, #000 0%, transparent 70%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Insights', href: '/insights' },
+        { label: data.title },
+      ]} />
+      <Reveal>
+        <div class="ab-article-head" style="margin-top:32px;max-width:820px;">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+            <span class="ab-tag">{data.tag}</span>
+            <span style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ab-steel);">{data.readingTime} read</span>
+          </div>
+          <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">{data.title}</h1>
+          <p class="ab-lead" style="margin-top:20px;max-width:62ch;">{data.summary}</p>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:28px;font-size:13px;color:var(--ab-steel);flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="ab-img-slot paper" style="width:36px;height:36px;border-radius:50%;padding:0;aspect-ratio:1/1;flex-shrink:0;overflow:hidden;display:block;" data-photo-prompt={`Square headshot of ${data.author} — UAE-based ISO consultant, business attire, neutral studio backdrop, soft daylight.`}></div>
+              <span style="color:var(--ab-navy);font-weight:600;">By {data.author}{data.authorRole ? <span style="color:var(--ab-steel);font-weight:400;"> · {data.authorRole}</span> : null}</span>
+            </div>
+            <span style="width:3px;height:3px;background:var(--ab-mute);border-radius:50%;"></span>
+            <span>Published {formatter.format(data.publishedAt)}</span>
+            {data.updatedAt && data.updatedAt.getTime() !== data.publishedAt.getTime() && (
+              <>
+                <span style="width:3px;height:3px;background:var(--ab-mute);border-radius:50%;"></span>
+                <span>Updated {formatter.format(data.updatedAt)}</span>
+              </>
+            )}
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Cover image -->
+  <section style="background:var(--ab-bg-sand);padding:0 0 56px;">
+    <div class="ab-container">
+      <Reveal>
+        <ImageSlot
+          aspect="16-9"
+          variant="navy"
+          label="Article cover"
+          caption={data.title}
+          prompt={`Editorial wide cover for an Al Batra insight titled "${data.title}". Topic: ${data.tag}. UAE context, restrained palette of navy/sand/gold, document-led visual language, no human faces.`}
+          style="margin-top:-40px;box-shadow:var(--ab-sh-lg);"
+        />
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Long-form + TOC -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <div class="ab-article-layout">
+        <div>
+          <Reveal>
+            <article class="ab-prose">
+              <Content />
+            </article>
+          </Reveal>
+          <hr class="ab-divider-dot" style="margin:48px 0 32px;" />
+          <Reveal>
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+              <span class="ab-tag muted">Share</span>
+              <a href={`https://www.linkedin.com/sharing/share-offsite/?url=https://albatraconsultants.com/insights/${entry.slug}`} class="ab-link" target="_blank" rel="noopener">LinkedIn ↗</a>
+              <a href={`mailto:?subject=${encodeURIComponent(data.title)}&body=${encodeURIComponent('https://albatraconsultants.com/insights/' + entry.slug)}`} class="ab-link">Email ↗</a>
+            </div>
+          </Reveal>
+        </div>
+        <aside class="ab-toc">
+          {h2s.length > 0 && (
+            <>
+              <div class="ab-toc__label">On this page</div>
+              <ol>
+                {h2s.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+              </ol>
+            </>
+          )}
+          <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--ab-line-cool);">
+            <div class="ab-toc__label" style="color:var(--ab-steel);">Map to your operation</div>
+            <p style="font-size:13px;color:var(--ab-ink-soft);line-height:1.55;margin:8px 0 14px;">
+              If the topic above applies to your engagement, we can usually estimate scope within a working day.
+            </p>
+            <a href="/contact" class="ab-btn ab-btn-primary" style="width:100%;justify-content:center;">
+              Talk to a consultant <Icon name="arrow-right" size={14} />
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  {others.length > 0 && (
+    <section class="ab-section ab-bg-sand">
+      <div class="ab-container">
+        <Reveal>
+          <div class="ab-eyebrow-line">Continue reading</div>
+          <h2 class="ab-display ab-h2" style="margin-bottom:40px;">More from the practice.</h2>
+        </Reveal>
+        <div class="ab-insights-grid">
+          {others.map((p, i) => (
+            <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+              <a class="ab-insight-card" href={`/insights/${p.slug}`} style="display:flex;flex-direction:column;padding:0;overflow:hidden;">
+                <ImageSlot
+                  aspect="16-9"
+                  variant="navy"
+                  label="Insight cover"
+                  caption={p.data.tag}
+                  prompt={`Editorial cover for "${p.data.title}" — topic: ${p.data.tag}.`}
+                />
+                <div style="padding:22px 24px 24px;flex:1;display:flex;flex-direction:column;">
+                  <div class="ab-insight-tag">{p.data.tag}</div>
+                  <div class="ab-insight-title">{p.data.title}</div>
+                  <div style="flex:1;"></div>
+                  <div class="ab-insight-meta">{formatter.format(p.data.publishedAt)} · {p.data.readingTime} read</div>
+                </div>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <LeadCTA />
+</BaseLayout>

@@ -1,0 +1,52 @@
+---
+import SectionHead from './SectionHead.astro';
+import Reveal from './Reveal.astro';
+
+type Phase = { n: string; t: string; d: string; meta: string };
+type Props = {
+  heading?: string;
+  eyebrow?: string;
+  phases?: Phase[];
+  lead?: string;
+};
+
+const {
+  heading = 'A five-phase engagement, scoped and priced up front.',
+  eyebrow = 'Methodology',
+  lead = 'The same five phases run through every engagement. The depth changes with the standard, the sector and the size of your operation — the structure does not.',
+  phases = [
+    { n: '01', t: 'Gap analysis',         d: 'On-site audit against the standard. A written report with a clause-by-clause action plan and indicative timeline.', meta: 'Wks 1–2' },
+    { n: '02', t: 'Documentation',        d: 'Manual, procedures and records written for your operation. Bilingual where required by the certification body.',     meta: 'Wks 2–6' },
+    { n: '03', t: 'Implementation',       d: 'On-site rollout, awareness sessions and a working evidence trail your auditors can follow.',                          meta: 'Wks 4–10' },
+    { n: '04', t: 'Internal audit',       d: 'Audit cycle, findings log, corrective actions tracked to closure, and management review minuted.',                    meta: 'Wks 8–11' },
+    { n: '05', t: 'Certification',        d: 'We sit with you through Stage 1 and Stage 2, and handle the closure of any findings.',                                meta: 'Wks 12+' },
+  ],
+} = Astro.props as Props;
+---
+<section class="ab-section" aria-labelledby="methodology">
+  <div class="ab-container">
+    <Reveal>
+      <SectionHead
+        eyebrow={eyebrow}
+        title={heading}
+        lead={lead}
+        link={{ href: '/methodology', label: 'Read the full methodology' }}
+      />
+    </Reveal>
+
+    <div class="ab-ladder">
+      {phases.map((p, i) => (
+        <Reveal delay={Math.min(5, (i % 5) + 1) as 1|2|3|4|5}>
+          <div class="ab-ladder__step">
+            <div class="ab-ladder__num">{p.n}</div>
+            <div>
+              <h3 class="ab-ladder__head">{p.t}</h3>
+              <p class="ab-ladder__body">{p.d}</p>
+            </div>
+            <div class="ab-ladder__meta">{p.meta}</div>
+          </div>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>

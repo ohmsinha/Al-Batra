@@ -1,0 +1,81 @@
+---
+import SectionHead from './SectionHead.astro';
+import Reveal from './Reveal.astro';
+import ImageSlot from './ImageSlot.astro';
+import Icon from './Icon.astro';
+
+const testimonials = [
+  {
+    q: 'The manual was written for our operation, not lifted from a template. When the certification body arrived, every clause already had its evidence in place.',
+    who: 'Operations Director',
+    org: 'Hospitality group · Dubai',
+    standard: 'ISO 22000',
+    metric: 'Stage 2 passed first attempt',
+  },
+  {
+    q: 'Documentation in English and Arabic, internal-auditor training for our team, and a consultant on site every week. We closed Stage 2 with no major findings.',
+    who: 'QHSE Manager',
+    org: 'Manufacturing operator · Sharjah',
+    standard: 'ISO 9001 + 45001',
+    metric: '12 weeks from kick-off',
+  },
+];
+---
+<section class="ab-section" aria-labelledby="client-proof">
+  <div class="ab-container">
+    <Reveal>
+      <SectionHead
+        eyebrow="Client perspective"
+        title="In the words of the organisations we have certified."
+        lead="Quotes published with permission. Names and organisations available on request after a mutual NDA."
+      />
+    </Reveal>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      {testimonials.map((t, i) => (
+        <Reveal delay={Math.min(5, (i + 1)) as 1|2|3|4|5}>
+          <figure class="ab-spot" style="margin:0;display:flex;flex-direction:column;gap:24px;height:100%;">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <span class="ab-tag">{t.standard}</span>
+              <span style="height:1px;background:var(--ab-line-cool);flex:1;"></span>
+              <span style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.04em;color:var(--ab-success);text-transform:uppercase;">{t.metric}</span>
+            </div>
+            <blockquote style="margin:0;font-family:var(--ab-font-display);font-size:22px;line-height:1.4;letter-spacing:-0.01em;font-weight:500;color:var(--ab-navy);">
+              <span style="color:var(--ab-red);font-size:32px;line-height:0;vertical-align:-8px;margin-right:6px;">&ldquo;</span>
+              {t.q}
+            </blockquote>
+            <figcaption style="display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:20px;border-top:1px solid var(--ab-line-cool);">
+              <div class="ab-img-slot paper" style="width:48px;height:48px;border-radius:50%;padding:0;aspect-ratio:1/1;flex-shrink:0;overflow:hidden;display:block;" data-photo-prompt={`Square avatar portrait of a UAE professional — ${t.who} at a ${t.org}. Studio lighting, neutral background.`}></div>
+              <div>
+                <div style="font-family:var(--ab-font-display);font-size:15px;font-weight:600;color:var(--ab-navy);letter-spacing:-0.005em;">{t.who}</div>
+                <div style="font-size:13px;color:var(--ab-steel);margin-top:2px;">{t.org}</div>
+              </div>
+            </figcaption>
+          </figure>
+        </Reveal>
+      ))}
+    </div>
+
+    <!-- Stat ribbon -->
+    <Reveal delay={3}>
+      <div class="ab-ribbon" style="margin-top:32px;">
+        <div class="ab-ribbon__cell">
+          <span class="ab-ribbon__num">600<sup style="font-size:.4em;color:var(--ab-red);">+</sup></span>
+          <span class="ab-ribbon__label">UAE organisations served since 2013</span>
+        </div>
+        <div class="ab-ribbon__cell">
+          <span class="ab-ribbon__num">27</span>
+          <span class="ab-ribbon__label">ISO standards in active practice</span>
+        </div>
+        <div class="ab-ribbon__cell">
+          <span class="ab-ribbon__num">7/7</span>
+          <span class="ab-ribbon__label">Emirates covered by on-site consultants</span>
+        </div>
+        <div class="ab-ribbon__cell">
+          <span class="ab-ribbon__num">100<sup style="font-size:.4em;color:var(--ab-red);">%</sup></span>
+          <span class="ab-ribbon__label">Engagements delivered on a fixed fee</span>
+        </div>
+      </div>
+    </Reveal>
+  </div>
+</section>

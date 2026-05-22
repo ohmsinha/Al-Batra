@@ -1,0 +1,16 @@
+---
+/**
+ * Wraps children in a div that fades + lifts in when it enters the viewport.
+ * Driven by /reveal.js. Default content is rendered visible if JS is off.
+ */
+type Props = {
+  as?: string;
+  delay?: 0 | 1 | 2 | 3 | 4 | 5;
+  class?: string;
+  style?: string;
+};
+const { as: Tag = 'div', delay = 0, class: className = '', style = '' } = Astro.props as Props;
+---
+<Tag class={`ab-reveal ${className}`} data-reveal-delay={delay} style={style}>
+  <slot />
+</Tag>

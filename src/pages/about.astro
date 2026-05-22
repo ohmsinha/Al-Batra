@@ -1,0 +1,226 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import LeadCTA from '../components/LeadCTA.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import Reveal from '../components/Reveal.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { company } from '../data/company';
+import { breadcrumbJsonLd } from '../utils/seo';
+
+const jsonLd = [breadcrumbJsonLd([
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+])];
+
+const principles = [
+  {
+    icon: 'badge-check',
+    t: 'Implementation, not advice',
+    d: 'We are an implementation consultancy. We write the manual, train your auditors, sit in the audit room. The system you certify is the system you operate.',
+  },
+  {
+    icon: 'scale',
+    t: 'Fixed-fee transparency',
+    d: 'Every engagement is scoped and priced before kick-off. No open-ended retainers, no hourly billing surprises — the price you agree is the price you pay.',
+  },
+  {
+    icon: 'globe',
+    t: 'Bilingual by default',
+    d: 'Documentation is delivered in English and Arabic where the certification body or controlling-language clause requires it. Same depth, same quality, both versions.',
+  },
+  {
+    icon: 'route',
+    t: 'A single lead consultant',
+    d: 'You work with one consultant from gap analysis through Stage 2 — not a rotating account team. They know your operation by the second visit.',
+  },
+];
+
+const team = [
+  { role: 'Managing Consultant', name: 'Founder', bio: 'Leads engagement strategy, certification-body relationships and senior advisory across the firm’s 27-standard roster.' },
+  { role: 'Lead Consultant — QMS / EMS', name: 'Lead Consultant', bio: 'Heads delivery for ISO 9001, 14001 and 50001 engagements across manufacturing, logistics and energy sectors.' },
+  { role: 'Lead Consultant — Food Safety', name: 'Lead Consultant', bio: 'Sharjah Municipality–approved GHP trainer. Delivers ISO 22000 and HACCP engagements across hotels, kitchens and food manufacturers.' },
+  { role: 'Lead Consultant — ISMS', name: 'Lead Consultant', bio: 'Heads ISO 27001 and 27701 implementations for UAE professional services, FinTech and IT operators.' },
+  { role: 'Senior Consultant — Healthcare', name: 'Senior Consultant', bio: 'ISO 13485 and 15189 implementation for clinics, diagnostic labs and medical device distributors.' },
+  { role: 'Senior Consultant — Integrated', name: 'Senior Consultant', bio: 'Integrated management systems combining QMS, EMS, OHSMS and FSMS under a single documentation set.' },
+];
+
+const teamPrompts = [
+  'Professional headshot of a UAE-based managing consultant in his 50s — warm navy suit, neutral studio backdrop, soft window light, confident composure.',
+  'Professional headshot of a UAE-based senior consultant — engineering background, business attire, neutral studio backdrop, soft daylight.',
+  'Professional headshot of a UAE-based food-safety consultant — neat business attire, neutral studio backdrop, warm soft light.',
+  'Professional headshot of a UAE-based ISMS consultant — business attire, neutral studio backdrop, soft daylight.',
+  'Professional headshot of a UAE-based healthcare-sector consultant — business attire, neutral backdrop, soft window light.',
+  'Professional headshot of a UAE-based integrated-systems consultant — business attire, neutral backdrop, soft daylight.',
+];
+---
+<BaseLayout
+  title="About Al Batra Management Consultancy"
+  description="An implementation consultancy headquartered in Sharjah, serving UAE organisations across the full ISO certification cycle since 2013."
+  jsonLd={jsonLd}
+>
+  <!-- Hero -->
+  <section class="ab-page-head" style="position:relative;overflow:hidden;">
+    <div aria-hidden="true" class="ab-blueprint" style="position:absolute;inset:0;opacity:.6;mask-image:radial-gradient(ellipse at 85% 100%, transparent 0%, #000 65%);-webkit-mask-image:radial-gradient(ellipse at 85% 100%, transparent 0%, #000 65%);"></div>
+    <div class="ab-container ab-page-head-inner" style="position:relative;">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'About' }]} />
+      <div style="margin-top:32px;display:grid;grid-template-columns:1.4fr 1fr;gap:80px;align-items:center;">
+        <Reveal>
+          <span class="ab-eyebrow-line">About Al Batra · since {company.founded}</span>
+          <h1 class="ab-display ab-h1-page" style="text-wrap:balance;">
+            An implementation consultancy.<br />
+            <span class="accent">Not a certification body.</span>
+          </h1>
+          <p class="ab-lead" style="margin-top:24px;">
+            We have supported UAE organisations through the full ISO certification cycle since {company.founded}. Headquartered in Sharjah, with consultants travelling on-site across all seven emirates, our work is implementation — gap analysis, documentation, internal audit, Stage 1/2 support — not certification.
+          </p>
+        </Reveal>
+        <Reveal delay={2}>
+          <ImageSlot
+            aspect="3-4"
+            variant="navy"
+            label="About · cover"
+            caption="The Al Batra office"
+            prompt="Editorial wide photograph of the Al Batra office interior at Rolla Mall, Sharjah — modern boardroom with framed ISO certificates, warm afternoon light through the window, no people visible."
+          />
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stat ribbon -->
+  <section style="background:#fff;border-top:1px solid var(--ab-line-warm);border-bottom:1px solid var(--ab-line-warm);">
+    <div class="ab-container" style="padding:0;">
+      <Reveal>
+        <div class="ab-ribbon" style="border-left:0;border-right:0;border-radius:0;">
+          <div class="ab-ribbon__cell">
+            <span class="ab-tag muted">Established</span>
+            <span class="ab-ribbon__num">{company.founded}</span>
+            <span class="ab-ribbon__label">Operating since · {new Date().getFullYear() - company.founded}+ years</span>
+          </div>
+          <div class="ab-ribbon__cell">
+            <span class="ab-tag muted">Coverage</span>
+            <span class="ab-ribbon__num">7/7</span>
+            <span class="ab-ribbon__label">Emirates served on-site</span>
+          </div>
+          <div class="ab-ribbon__cell">
+            <span class="ab-tag muted">Practice</span>
+            <span class="ab-ribbon__num">27</span>
+            <span class="ab-ribbon__label">ISO standards in active practice</span>
+          </div>
+          <div class="ab-ribbon__cell">
+            <span class="ab-tag muted">Clients</span>
+            <span class="ab-ribbon__num">{company.trustClaims.organisationsServed}</span>
+            <span class="ab-ribbon__label">Organisations through the certification cycle</span>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:80px;align-items:flex-start;">
+        <Reveal>
+          <span class="ab-eyebrow-line">Our story</span>
+          <h2 class="ab-display ab-h2" style="text-wrap:balance;">
+            Founded in 2013 to offer UAE organisations an implementation-first alternative.
+          </h2>
+          <div style="margin-top:28px;max-width:62ch;font-size:17px;line-height:1.65;color:var(--ab-ink-soft);display:flex;flex-direction:column;gap:18px;">
+            <p>For most of the previous decade, UAE organisations seeking ISO certification had a binary choice: hire a certification body that doubled as a consultant — a known conflict of interest — or commission a paper-only documentation set that read well but did not survive an accredited audit.</p>
+            <p>Al Batra was founded to offer a third option: an independent implementation consultancy. We do not issue certificates. We do not white-label another firm’s manual. We sit with you through every phase of the cycle and we hand over a working management system, not a binder.</p>
+            <p>Ten-plus years and {company.trustClaims.organisationsServed} organisations later, the practice has scaled across {company.trustClaims.standardsCovered} ISO standards and every emirate — but the operating model has not changed. One lead consultant. Weekly on-site. Fixed fee. Bilingual where it matters.</p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={1}>
+          <div class="ab-spot" style="position:sticky;top:120px;padding:32px;">
+            <div class="ab-tag">Quick facts</div>
+            <ul class="ab-glance" style="margin-top:18px;">
+              <li><span>Founded</span><span>{company.founded}</span></li>
+              <li><span>Head office</span><span>{company.address.city}</span></li>
+              <li><span>Coverage</span><span>UAE-wide</span></li>
+              <li><span>Standards</span><span>{company.trustClaims.standardsCovered} active</span></li>
+              <li><span>Engagement</span><span>Fixed-fee</span></li>
+              <li><span>Languages</span><span>EN · AR</span></li>
+              <li><span>Approval</span><span>Sharjah Municipality GHP</span></li>
+            </ul>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="ab-section ab-bg-paper-dim">
+    <div class="ab-container">
+      <Reveal>
+        <SectionHead
+          eyebrow="Operating principles"
+          title="Four commitments that shape every engagement."
+          lead="The principles below are not aspirational. They are the operating rules our consultants apply on every UAE engagement, and the ones our clients hold us to."
+        />
+      </Reveal>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
+        {principles.map((p, i) => (
+          <Reveal delay={Math.min(5, ((i % 2) + 1)) as 1|2|3|4|5}>
+            <div class="ab-spot" style="padding:36px;">
+              <span class="ab-disk gold lg"><Icon name={p.icon as any} size={26} /></span>
+              <h3 style="font-family:var(--ab-font-display);font-size:24px;font-weight:600;color:var(--ab-navy);margin:24px 0 12px;letter-spacing:-0.01em;">{p.t}</h3>
+              <p style="font-size:15px;line-height:1.6;color:var(--ab-ink-soft);margin:0;">{p.d}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="ab-section">
+    <div class="ab-container">
+      <Reveal>
+        <SectionHead
+          eyebrow="The consulting team"
+          title="Domain consultants, not generalists."
+          lead="Each member of the consulting team leads a discipline. The roster below covers the five most-requested practice areas. Bios and credentials available on request."
+        />
+      </Reveal>
+      <div class="ab-team-grid">
+        {team.map((m, i) => (
+          <Reveal delay={Math.min(5, ((i % 3) + 1)) as 1|2|3|4|5}>
+            <div class="ab-team-card">
+              <ImageSlot
+                aspect="4-5"
+                variant="navy"
+                label="Headshot"
+                caption={m.role}
+                prompt={teamPrompts[i] ?? 'Professional headshot of a UAE-based consultant — business attire, neutral studio backdrop, soft daylight.'}
+              />
+              <div>
+                <h3>{m.name}</h3>
+                <div class="role">{m.role}</div>
+                <p class="bio">{m.bio}</p>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pull quote -->
+  <section class="ab-section ab-bg-sand">
+    <div class="ab-container" style="text-align:center;">
+      <Reveal>
+        <span class="ab-eyebrow-line" style="justify-content:center;">From the consulting handbook</span>
+        <p style="font-family:var(--ab-font-display);font-size:clamp(26px,3.4vw,40px);font-weight:500;color:var(--ab-navy);line-height:1.25;letter-spacing:-0.015em;max-width:30ch;margin:24px auto 0;text-wrap:balance;">
+          <span style="color:var(--ab-red);">“</span>The standard tells you <em style="font-style:italic;color:var(--ab-red);">what</em> to do. Implementation is what makes the difference between a binder on a shelf and an organisation that operates the way it documents.<span style="color:var(--ab-red);">”</span>
+        </p>
+      </Reveal>
+    </div>
+  </section>
+
+  <LeadCTA />
+</BaseLayout>

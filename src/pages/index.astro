@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import TrustStrip from '../components/TrustStrip.astro';
+import WhatWeDo from '../components/WhatWeDo.astro';
+import FeaturedServices from '../components/FeaturedServices.astro';
+import ProcessStrip from '../components/ProcessStrip.astro';
+import IndustryHighlights from '../components/IndustryHighlights.astro';
+import ClientLogos from '../components/ClientLogos.astro';
+import ClientProof from '../components/ClientProof.astro';
+import UAEStrip from '../components/UAEStrip.astro';
+import FAQ from '../components/FAQ.astro';
+import InsightsPreview from '../components/InsightsPreview.astro';
+import LeadCTA from '../components/LeadCTA.astro';
+import { getCollection } from 'astro:content';
+import { faqJsonLd } from '../utils/seo';
+
+const faqEntries = (await getCollection('faq'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 5)
+  .map((e) => e.data);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': 'https://albatraconsultants.com/#website',
+    url: 'https://albatraconsultants.com',
+    name: 'Al Batra Management Consultancy',
+    inLanguage: ['en', 'ar'],
+    publisher: { '@id': 'https://albatraconsultants.com/#organization' },
+  },
+  faqJsonLd(faqEntries.map((e) => ({ question: e.question, answer: e.answer }))),
+];
+---
+<BaseLayout
+  title="ISO certification consulting in the UAE"
+  description="Al Batra Management Consultancy implements ISO certification across the UAE — gap analysis, documentation, internal audit and Stage 1/2 support. Fixed-fee, bilingual, UAE-wide."
+  jsonLd={jsonLd}
+>
+  <Hero />
+  <TrustStrip />
+  <WhatWeDo />
+  <FeaturedServices />
+  <ClientLogos />
+  <ProcessStrip />
+  <IndustryHighlights />
+  <ClientProof />
+  <UAEStrip />
+  <FAQ items={faqEntries} />
+  <InsightsPreview />
+  <LeadCTA />
+</BaseLayout>

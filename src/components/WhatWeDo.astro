@@ -1,0 +1,63 @@
+---
+import SectionHead from './SectionHead.astro';
+import Reveal from './Reveal.astro';
+import Icon from './Icon.astro';
+
+const items = [
+  {
+    icon: 'compass',
+    t: 'Gap analysis',
+    d: 'A structured on-site audit against the standard, with a written report identifying every clause-level gap and the work required to close it.',
+  },
+  {
+    icon: 'document',
+    t: 'System documentation',
+    d: 'Manuals, procedures, work instructions, forms and records — written for your operation, in English and Arabic where the certification body requires it.',
+  },
+  {
+    icon: 'list-check',
+    t: 'Implementation support',
+    d: 'On-site rollout, awareness sessions for staff, internal-auditor training and a working evidence trail your auditors can follow.',
+  },
+  {
+    icon: 'clipboard',
+    t: 'Internal audit',
+    d: 'A full internal audit cycle against the standard with findings logged, corrective actions tracked, and management review minutes prepared.',
+  },
+  {
+    icon: 'badge-check',
+    t: 'Certification support',
+    d: 'We stay with you through Stage 1 and Stage 2, respond to auditor questions, and handle non-conformity closure and the surveillance cycle.',
+  },
+  {
+    icon: 'scale',
+    t: 'Fixed-fee delivery',
+    d: 'Every engagement is scoped and priced up front. No open-ended retainers, no hourly surprises — the price you agree is the price you pay.',
+  },
+];
+---
+<section class="ab-section ab-bg-paper-dim" aria-labelledby="what-we-deliver">
+  <div class="ab-container">
+    <Reveal>
+      <SectionHead
+        eyebrow="What we deliver"
+        title="One consultancy, the whole certification cycle."
+        lead="We are an implementation consultancy, not a certification body. Our role is to make sure your system is built and operating before the auditor arrives."
+      />
+    </Reveal>
+    <div class="ab-deliver-grid">
+      {items.map((it, i) => (
+        <Reveal delay={Math.min(5, (i % 3) + 1) as 1|2|3|4|5}>
+          <div class="ab-deliver-card" style="height:100%;display:flex;flex-direction:column;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <span class="ab-disk gold"><Icon name={it.icon as any} size={22} stroke={1.5} /></span>
+              <span class="ab-deliver-num">{String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="ab-deliver-title" style="margin-top:24px;">{it.t}</div>
+            <div class="ab-deliver-desc" style="flex:1;">{it.d}</div>
+          </div>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>

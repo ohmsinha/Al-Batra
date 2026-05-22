@@ -1,0 +1,103 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { footerServices, footerCompany, footerResources } from '../data/navigation';
+import { company } from '../data/company';
+
+type Props = { locale?: 'en' | 'ar' };
+const { locale = 'en' } = Astro.props as Props;
+const isRtl = locale === 'ar';
+const year = new Date().getFullYear();
+
+const prefix = isRtl ? '/ar' : '';
+const services = footerServices.map((i) => ({ ...i, href: `${prefix}${i.href}` }));
+const companyLinks = footerCompany.map((i) => ({ ...i, href: `${prefix}${i.href}` }));
+const resourceLinks = footerResources.map((i) => ({ ...i, href: `${prefix}${i.href}` }));
+---
+<footer class="ab-footer" dir={isRtl ? 'rtl' : 'ltr'}>
+  <div class="ab-container">
+    <!-- Pre-footer CTA strip -->
+    <div style="padding:0 0 56px;margin-bottom:56px;border-bottom:1px solid rgba(255,255,255,.12);display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:end;" class="ab-footer-cta-grid">
+      <div>
+        <span style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ab-gold);display:inline-flex;align-items:center;gap:10px;">
+          <span style="width:18px;height:1px;background:currentColor;"></span>
+          {isRtl ? 'تواصل معنا' : 'Talk to a consultant'}
+        </span>
+        <h2 style="font-family:var(--ab-font-display);font-size:clamp(28px,3vw,40px);font-weight:600;line-height:1.15;letter-spacing:-0.02em;color:#fff;margin:14px 0 0;max-width:18ch;text-wrap:balance;">
+          {isRtl ? 'مستعدون لمناقشة مشروعك؟' : 'Ready to discuss your certification plan?'}
+        </h2>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+        <a href={`${prefix}/contact`} class="ab-btn ab-btn-accent">
+          {isRtl ? 'طلب عرض' : 'Request a proposal'} <Icon name="arrow-right" size={14} />
+        </a>
+        <a href={`tel:${company.phones[0].tel}`} class="ab-btn ab-btn-ghost-light">
+          <Icon name="phone" size={14} /> {company.phones[0].display}
+        </a>
+      </div>
+    </div>
+
+    <div class="ab-footer-grid" style="grid-template-columns:1.6fr 1fr 1fr 1fr;">
+      <div>
+        <Logo size={48} variant="footer" />
+        <p style="font-size:14px;color:rgba(255,255,255,.78);line-height:1.6;max-width:340px;margin-top:20px;">
+          {isRtl
+            ? 'استشارات متخصصة لتطبيق أنظمة الإدارة وشهادات الأيزو في دولة الإمارات العربية المتحدة، بمنهجية واضحة ورسوم محددة مسبقًا.'
+            : 'An implementation consultancy for UAE organisations across the full ISO certification cycle. Sharjah Municipality–approved for GHP training.'}
+        </p>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:28px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.55;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <Icon name="pin" size={16} />
+            <span>{company.address.line1}, {company.address.line2}<br />{company.address.city}, {company.address.country}</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <Icon name="clock" size={16} />
+            <span>{company.openingHours}</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4>{isRtl ? 'الخدمات' : 'Services'}</h4>
+        <ul>
+          {services.map((s) => (<li><a href={s.href}>{s.label}</a></li>))}
+        </ul>
+      </div>
+      <div>
+        <h4>{isRtl ? 'الشركة' : 'Company'}</h4>
+        <ul>
+          {companyLinks.map((s) => (<li><a href={s.href}>{s.label}</a></li>))}
+        </ul>
+      </div>
+      <div>
+        <h4>{isRtl ? 'تواصل' : 'Contact'}</h4>
+        <ul>
+          {company.phones.map((p) => (
+            <li style="display:flex;align-items:center;gap:8px;"><Icon name="phone" size={12} /><a href={`tel:${p.tel}`}>{p.display}</a></li>
+          ))}
+          <li style="display:flex;align-items:center;gap:8px;"><Icon name="mail" size={12} /><a href={`mailto:${company.email}`}>{company.email}</a></li>
+          {company.socials.linkedin && (
+            <li style="display:flex;align-items:center;gap:8px;"><Icon name="linkedin" size={12} /><a href={company.socials.linkedin} rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
+          )}
+        </ul>
+        <h4 style="margin-top:32px;">{isRtl ? 'المراجع' : 'Resources'}</h4>
+        <ul>
+          {resourceLinks.map((s) => (<li><a href={s.href}>{s.label}</a></li>))}
+        </ul>
+      </div>
+    </div>
+    <div class="ab-footer-bottom">
+      <div>© {year} {company.legalName} · {isRtl ? 'جميع الحقوق محفوظة' : 'All rights reserved'}</div>
+      <div style="display:flex;gap:18px;align-items:center;">
+        <span style="font-family:var(--ab-font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);">Sharjah · UAE</span>
+        <a href={`${prefix}/sitemap-index.xml`}>Sitemap</a>
+      </div>
+    </div>
+  </div>
+  <style>
+    @media (max-width: 720px) {
+      .ab-footer-cta-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+</footer>

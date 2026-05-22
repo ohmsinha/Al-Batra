@@ -1,0 +1,142 @@
+---
+import Reveal from './Reveal.astro';
+import Icon from './Icon.astro';
+
+type Props = {
+  eyebrow?: string;
+  titleA?: string;
+  titleAccent?: string;
+  titleB?: string;
+  lead?: string;
+  primaryCtaHref?: string;
+  primaryCtaLabel?: string;
+  secondaryCtaHref?: string;
+  secondaryCtaLabel?: string;
+};
+
+const {
+  eyebrow = 'ISO certification · UAE',
+  titleA = 'Certification,',
+  titleAccent = 'implemented',
+  titleB = 'to pass audit.',
+  lead = 'We take UAE organisations through the full ISO certification cycle — gap analysis, documentation, implementation, internal audit and Stage 1/2 — on a fixed fee, in English and Arabic.',
+  primaryCtaHref = '/contact',
+  primaryCtaLabel = 'Request a proposal',
+  secondaryCtaHref = '/methodology',
+  secondaryCtaLabel = 'See the methodology',
+} = Astro.props as Props;
+---
+<section class="ab-hero-v2">
+  <div class="ab-container">
+    <div class="ab-hero-v2-grid">
+      <Reveal class="ab-hero-v2__copy">
+        <span class="ab-eyebrow-line">{eyebrow}</span>
+        <h1 class="ab-display">
+          {titleA}<br />
+          <span class="accent">{titleAccent}</span><br />
+          {titleB}
+        </h1>
+        <p class="ab-hero-v2__lead">{lead}</p>
+
+        <div class="ab-hero-v2__cta-row">
+          <a href={primaryCtaHref} class="ab-btn ab-btn-primary">
+            {primaryCtaLabel}
+            <Icon name="arrow-right" size={16} />
+          </a>
+          <a href={secondaryCtaHref} class="ab-btn ab-btn-secondary">
+            {secondaryCtaLabel}
+          </a>
+          <a href="/services" class="ab-link" style="margin-left:6px;">
+            27 standards covered
+            <Icon name="arrow-up-right" size={14} />
+          </a>
+        </div>
+
+        <div class="ab-hero-v2__trust">
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <strong>600+</strong>
+            <span>UAE organisations served</span>
+          </div>
+          <div style="width:1px;height:32px;background:var(--ab-line-warm);"></div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <strong>10+ yrs</strong>
+            <span>since 2013</span>
+          </div>
+          <div style="width:1px;height:32px;background:var(--ab-line-warm);"></div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <strong>Sharjah Municipality</strong>
+            <span>approved (GHP training)</span>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal class="ab-hero-v2__visual" delay={2}>
+        <!-- Back document (partial, peeking) -->
+        <div class="ab-hero-v2__doc-back" aria-hidden="true">
+          <article class="ab-doc">
+            <header class="ab-doc__head">
+              <span class="ab-doc__ref">Internal audit · IA-2024-08</span>
+              <Icon name="badge-check" size={20} class="" stroke={1.5} />
+            </header>
+            <h3 class="ab-doc__title">Audit closure · ISO 14001</h3>
+            <dl style="margin:0;">
+              <div class="ab-doc__row"><dt>Scope</dt><dd>Site operations</dd></div>
+              <div class="ab-doc__row"><dt>Findings</dt><dd>0 major · 2 minor</dd></div>
+              <div class="ab-doc__row"><dt>Status</dt><dd style="color:var(--ab-success);">Closed</dd></div>
+            </dl>
+          </article>
+        </div>
+
+        <!-- Front document — primary -->
+        <div class="ab-hero-v2__doc-main">
+          <article class="ab-doc">
+            <header class="ab-doc__head">
+              <span class="ab-doc__ref">Stage 2 readiness · Q-2024-117</span>
+              <span class="ab-doc__stamp">Ready for<br />certifier</span>
+            </header>
+            <h3 class="ab-doc__title">Quality Management System — ISO 9001:2015</h3>
+            <dl style="margin:0 0 14px;">
+              <div class="ab-doc__row"><dt>Client</dt><dd>Manufacturing · Sharjah</dd></div>
+              <div class="ab-doc__row"><dt>Engagement</dt><dd>Fixed fee · 12 weeks</dd></div>
+              <div class="ab-doc__row"><dt>Languages</dt><dd>English · Arabic</dd></div>
+            </dl>
+
+            <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--ab-line-warm);">
+              <div style="font-family:var(--ab-font-mono);font-size:10px;color:var(--ab-steel);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">Pre-audit checklist</div>
+              <div class="ab-doc__check">
+                <Icon name="check" size={16} stroke={2} />
+                <span>Quality manual + scope statement</span>
+              </div>
+              <div class="ab-doc__check">
+                <Icon name="check" size={16} stroke={2} />
+                <span>27 procedures · 41 records</span>
+              </div>
+              <div class="ab-doc__check">
+                <Icon name="check" size={16} stroke={2} />
+                <span>Internal audit complete</span>
+              </div>
+              <div class="ab-doc__check">
+                <Icon name="check" size={16} stroke={2} />
+                <span>Management review minuted</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Floating chips -->
+        <div class="ab-float" style="top:-14px;left:-24px;">
+          <span class="dot navy"></span>
+          <span>Gap analysis complete</span>
+        </div>
+        <div class="ab-float" style="bottom:24px;left:-32px;">
+          <span class="dot gold"></span>
+          <span style="font-family:var(--ab-font-mono);font-size:11px;letter-spacing:.04em;">EN · AR documentation</span>
+        </div>
+        <div class="ab-float" style="bottom:-18px;right:24px;">
+          <span class="dot"></span>
+          <span><strong style="color:var(--ab-navy);">Stage 2</strong> &nbsp;closed without major NC</span>
+        </div>
+      </Reveal>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,86 @@
+---
+import { standards } from '../data/standards';
+import SectionHead from './SectionHead.astro';
+import Reveal from './Reveal.astro';
+import Icon from './Icon.astro';
+
+type Props = {
+  heading?: string;
+  eyebrow?: string;
+  showLink?: boolean;
+  limit?: number;
+  locale?: 'en' | 'ar';
+};
+
+const {
+  heading = 'The standards UAE organisations actually certify against.',
+  eyebrow = 'Consulting services',
+  showLink = true,
+  limit = 9,
+  locale = 'en',
+} = Astro.props as Props;
+
+const prefix = locale === 'ar' ? '/ar' : '';
+
+const featured = standards
+  .filter((s) => s.slug)
+  .slice(0, limit)
+  .map((s) => ({
+    ...s,
+    href: `${prefix}/services/${s.slug}`,
+  }));
+
+const descriptions: Record<string, string> = {
+  'iso-9001': 'Full QMS implementation — context, processes, internal audit and pre-certification readiness.',
+  'iso-14001': 'Aspect-impact registers, legal compliance evaluation and continual improvement programmes.',
+  'iso-45001': 'OHSMS implementation for construction, manufacturing, hospitality and facilities operators.',
+  'iso-22000': 'Hazard analysis, PRPs and FSMS documentation for hotels, kitchens and food manufacturers.',
+  'iso-27001': 'ISMS scoping, Statement of Applicability, risk treatment and Stage 1/2 readiness.',
+  'iso-13485': 'Quality management for medical device design, manufacture and distribution.',
+  'iso-17025': 'Testing and calibration laboratory accreditation, including method validation.',
+  'iso-22301': 'BCMS framework, business impact analysis, recovery testing and management review.',
+  'iso-50001': 'Energy reviews, baselines, EnPIs and operational controls aligned to UAE energy policy.',
+};
+
+const icons: Record<string, string> = {
+  'iso-9001': 'gauge',
+  'iso-14001': 'leaf',
+  'iso-45001': 'shield',
+  'iso-22000': 'utensils',
+  'iso-27001': 'lock',
+  'iso-13485': 'heart-pulse',
+  'iso-17025': 'beaker',
+  'iso-22301': 'route',
+  'iso-50001': 'spark',
+};
+---
+<section class="ab-section" aria-labelledby="featured-services">
+  <div class="ab-container">
+    <Reveal>
+      <SectionHead
+        eyebrow={eyebrow}
+        title={heading}
+        lead="A focused practice in the management-system standards most relevant to UAE operators. Every engagement is scoped to your sector and certification body."
+        link={showLink ? { href: `${prefix}/services`, label: 'See all 27 standards' } : undefined}
+      />
+    </Reveal>
+    <div class="ab-services-grid">
+      {featured.map((s, i) => (
+        <Reveal delay={Math.min(5, (i % 3) + 1) as 1|2|3|4|5}>
+          <a class="ab-service-card" href={s.href}>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+              <span class="ab-disk gold"><Icon name={(icons[s.slug as string] ?? 'document') as any} size={22} /></span>
+              <span class="ab-service-code">{s.code}</span>
+            </div>
+            <h3 class="ab-service-title" style="margin-top:18px;">{s.title}</h3>
+            <p class="ab-service-desc">{descriptions[s.slug as string] ?? ''}</p>
+            <div style="flex:1;"></div>
+            <div class="ab-service-card-cta" style="display:flex;align-items:center;gap:6px;">
+              Learn more <Icon name="arrow-right" size={14} />
+            </div>
+          </a>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>

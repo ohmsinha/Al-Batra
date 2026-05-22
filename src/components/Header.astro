@@ -1,0 +1,92 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { primaryNav } from '../data/navigation';
+
+type Props = { locale?: 'en' | 'ar'; currentPath?: string };
+const { locale = 'en', currentPath } = Astro.props as Props;
+const pathname = currentPath ?? Astro.url.pathname;
+const isRtl = locale === 'ar';
+
+function isActive(href: string): boolean {
+  if (href === '/' || href === '/ar' || href === '/ar/') {
+    return pathname === '/' || pathname === '/ar' || pathname === '/ar/';
+  }
+  return pathname.startsWith(href);
+}
+
+const navItems = primaryNav.map((item) => ({
+  href: isRtl ? `/ar${item.href === '/' ? '' : item.href}` : item.href,
+  label: isRtl && item.labelAr ? item.labelAr : item.label,
+}));
+
+const arPath = isRtl ? pathname : `/ar${pathname === '/' ? '' : pathname}`;
+const enPath = isRtl ? pathname.replace(/^\/ar/, '') || '/' : pathname;
+const ctaHref = isRtl ? '/ar/contact' : '/contact';
+const ctaLabel = isRtl ? 'اطلب عرضًا' : 'Request a proposal';
+const homeHref = isRtl ? '/ar' : '/';
+---
+<header class="ab-header" dir={isRtl ? 'rtl' : 'ltr'}>
+  <a href="#main" class="ab-skip">Skip to main content</a>
+  <div class="ab-header-inner">
+    <a href={homeHref} aria-label="Al Batra Management Consultancy — Home" style="display:flex;align-items:center;gap:10px;">
+      <Logo size={34} />
+    </a>
+    <nav class="ab-nav" aria-label="Primary">
+      {navItems.map((item) => (
+        <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div class="ab-lang-toggle" aria-label="Language">
+        <a href={enPath} hreflang="en" class={!isRtl ? 'active' : ''} aria-current={!isRtl ? 'true' : undefined}>EN</a>
+        <a href={arPath} hreflang="ar" class={isRtl ? 'active' : ''} aria-current={isRtl ? 'true' : undefined}>عربي</a>
+      </div>
+      <a href={ctaHref} class="ab-btn ab-btn-primary" style="padding:10px 18px;">
+        {ctaLabel}
+        <Icon name="arrow-right" size={14} />
+      </a>
+      <button type="button" class="ab-mobile-toggle" aria-label="Toggle navigation" data-mobile-toggle>
+        <span></span>
+      </button>
+    </div>
+  </div>
+  <nav class="ab-mobile-nav" aria-label="Mobile" hidden>
+    {navItems.map((item) => (
+      <a href={item.href}>{item.label}</a>
+    ))}
+    <a href={ctaHref} class="ab-btn ab-btn-primary" style="margin-top:8px;">{ctaLabel} <Icon name="arrow-right" size={14} /></a>
+  </nav>
+</header>
+
+<style>
+  .ab-mobile-nav {
+    display: none;
+    padding: 16px 24px 24px;
+    border-bottom: 1px solid var(--ab-line-cool);
+    background: rgba(255,255,255,.96);
+    flex-direction: column;
+    gap: 14px;
+    font-size: 15px;
+  }
+  .ab-mobile-nav a { color: var(--ab-ink); padding: 6px 0; }
+  .ab-mobile-nav[data-open] { display: flex; }
+</style>
+
+<script>
+  const toggle = document.querySelector('[data-mobile-toggle]');
+  const menu = document.querySelector('.ab-mobile-nav');
+  toggle?.addEventListener('click', () => {
+    if (!menu) return;
+    const isOpen = menu.hasAttribute('data-open');
+    if (isOpen) {
+      menu.removeAttribute('data-open');
+      menu.setAttribute('hidden', '');
+    } else {
+      menu.setAttribute('data-open', '');
+      menu.removeAttribute('hidden');
+    }
+  });
+</script>

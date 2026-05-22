@@ -1,0 +1,7 @@
+---
+type Props = { size?: number; variant?: 'primary' | 'footer'; class?: string };
+const { size = 36, variant = 'primary', class: className = '' } = Astro.props as Props;
+const src = variant === 'footer' ? '/assets/logo-footer.png' : '/assets/logo.png';
+const alt = 'Al Batra Management Consultancy';
+---
+<img src={src} alt={alt} height={size} width={variant === 'footer' ? size : undefined} style={`height:${size}px;width:auto;display:block;`} class={className} loading="eager" decoding="async" />
